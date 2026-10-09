@@ -1,12 +1,20 @@
 import express from 'express';
 import { corsMiddleware, errorHandler, notFoundHandler } from './middleware/errorHandler.js';
+import { securityHeaders } from './middleware/securityHeaders.js';
 import apiRouter from './routes/index.js';
 
 export const app = express();
 
-// Базовые middleware
-app.use(express.json({ limit: '1mb' }));
-app.use(express.urlencoded({ extended: true }));
+// Доверие обратному прокси (Cloudflare, Nginx, Render, Vercel)
+// Позволяет корректно определять IP клиента для Rate Limiting
+app.set('trust proxy', 1);
+
+// Защитные HTTP-заголовки
+app.use(securityHeaders);
+
+// Лимит размера тела запроса (защита от атак переполнения памяти)
+app.use(express.json({ limit: '50kb' }));
+app.use(express.urlencoded({ extended: true, limit: '50kb' }));
 
 // Настройка CORS
 app.use(corsMiddleware);
@@ -25,7 +33,12 @@ app.use((req, res, next) => {
 app.get('/', (req, res) => {
   res.json({
     service: 'MedBooking & RehabConnect Backend API',
-    version: '1.0.0',
+    version: '1.1.0',
+    security: {
+      rateLimiting: 'Active (100 req/min general, 5 req/10min bookings)',
+      honeypotAntiBot: 'Enabled',
+      headers: 'HSTS, X-Frame-Options, NoSniff'
+    },
     documentation: {
       health: 'GET /api/health',
       clinics: 'GET /api/clinics?lat=...&lng=...&city=...&category=...&search=...&maxPrice=...',

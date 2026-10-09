@@ -598,15 +598,29 @@ async function handleBookingSubmit(e) {
   const comment = commentInput ? commentInput.value.trim() : '';
   const clinicName = currentClinicForBooking ? currentClinicForBooking.name : 'Клиника MedBooking';
 
-  // 1. Клиентская валидация
+  // 1. Проверка скрытой ловушки ботов (Honeypot)
+  const honeypotVal = document.getElementById('hp_user_website')?.value.trim();
+  if (honeypotVal) {
+    console.warn('🤖 Бот обнаружен на клиенте через Honeypot!');
+    // Имитируем успех, чтобы запутать спам-бота и не слать запрос
+    showToast('Заявка принята', 'success');
+    document.getElementById('bookingModal')?.classList.add('hidden');
+    return;
+  }
+
+  // Клиентская санитизация текста (удаление опасных тегов)
+  const cleanPatientName = (patientName || '').replace(/<[^>]*>/g, '').trim();
+  const cleanPhone = (patientPhone || '').replace(/[\s\-\(\)\.]/g, '');
+  const cleanComment = (comment || '').replace(/<[^>]*>/g, '').trim();
+
+  // 2. Клиентская валидация
   if (errorAlert) errorAlert.classList.add('hidden');
   if (errorText) errorText.innerHTML = '';
 
   const clientErrors = [];
-  if (!patientName || patientName.length < 2) {
+  if (!cleanPatientName || cleanPatientName.length < 2) {
     clientErrors.push('Пожалуйста, укажите имя пациента (не менее 2 символов)');
   }
-  const cleanPhone = patientPhone.replace(/[\s\-\(\)\.]/g, '');
   if (!cleanPhone || cleanPhone.length < 7) {
     clientErrors.push('Пожалуйста, укажите корректный номер телефона (от 7 цифр)');
   }
@@ -620,7 +634,7 @@ async function handleBookingSubmit(e) {
     return;
   }
 
-  // 2. Индикатор загрузки на кнопке
+  // 3. Индикатор загрузки на кнопке
   if (submitBtn) {
     submitBtn.disabled = true;
     submitBtn.innerHTML = `
@@ -633,7 +647,7 @@ async function handleBookingSubmit(e) {
   }
 
   try {
-    // 3. Отправка POST-запроса на бэкенд API
+    // 4. Отправка POST-запроса на бэкенд API с передачей honeypot
     const response = await fetch(`${API_BASE_URL}/api/bookings`, {
       method: 'POST',
       headers: {
@@ -641,12 +655,13 @@ async function handleBookingSubmit(e) {
         'Accept': 'application/json'
       },
       body: JSON.stringify({
-        patientName,
-        patientPhone,
+        patientName: cleanPatientName,
+        patientPhone: cleanPhone,
         clinicName,
         service,
-        comment,
-        desiredDate
+        comment: cleanComment,
+        desiredDate,
+        hp_user_website: honeypotVal || ''
       })
     });
 
@@ -830,3 +845,179 @@ window.addEventListener('DOMContentLoaded', () => {
   renderClinics();
   if (window.lucide) lucide.createIcons();
 });
+
+// ==========================================
+// ЮРИДИЧЕСКИЙ БЛОК (LEGAL DOCUMENTS & MODALS)
+// ==========================================
+
+const LEGAL_DOCS = {
+  privacy: {
+    title: 'Политика конфиденциальности и защиты данных',
+    content: `
+      <div class="space-y-4">
+        <div>
+          <span class="inline-block text-[10px] font-semibold tracking-wider uppercase text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-2.5 py-0.5 rounded-full mb-1.5">Безопасность данных</span>
+          <h4 class="text-sm font-bold text-slate-900 dark:text-white">1. Общие положения</h4>
+          <p class="mt-1">Настоящая Политика конфиденциальности определяет порядок обработки и защиты персональной информации пользователей веб-сервиса MedBooking (далее — «Сервис»). Мы соблюдаем международные нормы информационной безопасности, законодательство Республики Таджикистан, Республики Узбекистан и нормы Регламента защиты персональных данных.</p>
+        </div>
+
+        <div>
+          <h4 class="text-sm font-bold text-slate-900 dark:text-white">2. Какие данные мы собираем</h4>
+          <p class="mt-1">При отправке заявки на бронирование Сервис собирает исключительно минимально необходимые сведения:</p>
+          <ul class="list-disc pl-5 mt-1 space-y-1">
+            <li>ФИО пациента или его законного представителя;</li>
+            <li>Контактный номер телефона (для связи и мессенджера WhatsApp);</li>
+            <li>Выбранное медицинское учреждение, город и желаемая медицинская услуга;</li>
+            <li>Комментарий пользователя (краткое описание симптомов или пожеланий);</li>
+            <li>Технические данные: IP-адрес для предотвращения DDoS и спам-атак.</li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="text-sm font-bold text-slate-900 dark:text-white">3. Цели сбора и обработки данных</h4>
+          <p class="mt-1">Сбор данных осуществляется исключительно в целях:</p>
+          <ul class="list-disc pl-5 mt-1 space-y-1">
+            <li>Организации предварительной записи и консультации в выбранной партнерской клинике;</li>
+            <li>Связи дежурного медицинского координатора с пациентом в течение регламентных 15 минут;</li>
+            <li>Защиты IT-инфраструктуры от спам-ботов, перегрузок и кибератак.</li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="text-sm font-bold text-slate-900 dark:text-white">4. Передача третьим лицам и конфиденциальность</h4>
+          <p class="mt-1">Персональные данные передаются <strong>строго и исключительно</strong> в выбранную пользователем партнерскую клинику для согласования медицинского приема. Мы ни при каких обстоятельствах не продаем, не передаем и не раскрываем контактные данные рекламным сетям или третьим лицам.</p>
+        </div>
+
+        <div>
+          <h4 class="text-sm font-bold text-slate-900 dark:text-white">5. Безопасность и шифрование</h4>
+          <p class="mt-1">Все каналы передачи данных защищены 256-битным SSL/TLS-шифрованием, WAF-файрволами и многоуровневыми Rate Limiter фильтрами. Данные не хранятся на общедоступных серверах.</p>
+        </div>
+
+        <div>
+          <h4 class="text-sm font-bold text-slate-900 dark:text-white">6. Права субъекта данных</h4>
+          <p class="mt-1">Вы имеете право в любой момент отозвать согласие на обработку данных или запросить их полное удаление, обратившись к координатору сервиса по горячей линии или в Telegram.</p>
+        </div>
+      </div>
+    `
+  },
+  terms: {
+    title: 'Пользовательское соглашение сервиса MedBooking',
+    content: `
+      <div class="space-y-4">
+        <div>
+          <span class="inline-block text-[10px] font-semibold tracking-wider uppercase text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/60 px-2.5 py-0.5 rounded-full mb-1.5">Публичная оферта</span>
+          <h4 class="text-sm font-bold text-slate-900 dark:text-white">1. Предмет соглашения</h4>
+          <p class="mt-1">Настоящее Пользовательское соглашение регулирует условия использования информационной платформы MedBooking (RehabConnect). Использование функционала сайта (поиск клиник, фильтрация, отправка заявки) означает полное согласие пользователя с настоящими условиями.</p>
+        </div>
+
+        <div>
+          <h4 class="text-sm font-bold text-slate-900 dark:text-white">2. Статус информационного агрегатора</h4>
+          <p class="mt-1">Сервис MedBooking является <strong>информационным агрегатором</strong> и технологической витриной. Сервис:</p>
+          <ul class="list-disc pl-5 mt-1 space-y-1">
+            <li>НЕ является медицинским учреждением или больницей;</li>
+            <li>НЕ оказывает платные медицинские услуги от своего имени;</li>
+            <li>Осуществляет информационно-навигационную помощь по подбору лицензированных партнерских стационаров и клиник в Душанбе, Ташкенте и Стамбуле.</li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="text-sm font-bold text-slate-900 dark:text-white">3. Порядок бронирования</h4>
+          <p class="mt-1">Заполнение заявки на сайте является предварительным запросом на организацию консультации. Окончательное подтверждение даты, времени, стоимости и условий госпитализации осуществляется координатором клиники при прямой телефонной связи с пациентом.</p>
+        </div>
+
+        <div>
+          <h4 class="text-sm font-bold text-slate-900 dark:text-white">4. Ограничение ответственности</h4>
+          <p class="mt-1">Договор на медицинское обслуживание заключается пациентом непосредственно с лицензированной клиникой. Сервис MedBooking не несет ответственности за качество медицинских манипуляций, врачебные назначения, методы лечения и диагнозы, установленные персоналом клиник.</p>
+        </div>
+
+        <div>
+          <h4 class="text-sm font-bold text-slate-900 dark:text-white">5. Обязанности пользователя</h4>
+          <p class="mt-1">Пользователь обязуется указывать достоверные контактные данные для обратной связи. Запрещаются попытки взлома, автоматизированный парсинг данных и спам-атаки на сервис (IP-адреса нарушителей блокируются автоматической системой WAF).</p>
+        </div>
+      </div>
+    `
+  },
+  disclaimer: {
+    title: 'Медицинский отказ от ответственности (Disclaimer)',
+    content: `
+      <div class="space-y-4">
+        <div class="bg-amber-50 dark:bg-amber-950/40 p-3.5 rounded-xl border border-amber-200/80 dark:border-amber-900/60 text-amber-900 dark:text-amber-200">
+          <p class="font-semibold text-xs flex items-center gap-1.5">
+            <i data-lucide="alert-triangle" class="h-4 w-4 shrink-0 text-amber-600 dark:text-amber-400"></i>
+            Важное медицинское уведомление
+          </p>
+          <p class="mt-1 text-[11px] leading-relaxed">
+            Информация, представленная на платформе MedBooking, носит исключительно справочно-ознакомительный характер и не может заменить очную консультацию квалифицированного врача.
+          </p>
+        </div>
+
+        <div>
+          <h4 class="text-sm font-bold text-slate-900 dark:text-white">1. Отсутствие медицинских консультаций онлайн</h4>
+          <p class="mt-1">Сайт не предоставляет медицинских консультаций в режиме онлайн, не выписывает рецептов и не назначает медикаментозную терапию. Описание симптомов и программ клиник не является руководством к самолечению.</p>
+        </div>
+
+        <div>
+          <h4 class="text-sm font-bold text-slate-900 dark:text-white">2. Экстренные случаи</h4>
+          <p class="mt-1">При возникновении неотложных состояний, острых болей, угрозе жизни или тяжелых травмах немедленно вызывайте бригаду скорой медицинской помощи (103 в Таджикистане и Узбекистане, 112 в Турции) либо обращайтесь в ближайший приемный покой стационара.</p>
+        </div>
+
+        <div>
+          <h4 class="text-sm font-bold text-slate-900 dark:text-white">3. Лицензирование</h4>
+          <p class="mt-1">Все медицинские учреждения в каталоге платформы MedBooking лицензированы министерствами здравоохранения соответствующих государств (РТ, РУз, Турецкая Республика) и имеют международные сертификаты качества.</p>
+        </div>
+      </div>
+    `
+  }
+};
+
+let currentLegalTab = 'privacy';
+
+function openLegalModal(tab = 'privacy') {
+  currentLegalTab = tab;
+  const modal = document.getElementById('legalModal');
+  if (!modal) return;
+
+  switchLegalTab(tab);
+  modal.classList.remove('hidden');
+}
+
+function closeLegalModal() {
+  const modal = document.getElementById('legalModal');
+  if (modal) modal.classList.add('hidden');
+}
+
+function switchLegalTab(tab) {
+  currentLegalTab = tab;
+  const doc = LEGAL_DOCS[tab] || LEGAL_DOCS.privacy;
+
+  // Обновление заголовка и содержимого
+  const titleEl = document.getElementById('legalModalTitle');
+  const contentEl = document.getElementById('legalModalContent');
+  if (titleEl) titleEl.innerText = doc.title;
+  if (contentEl) contentEl.innerHTML = doc.content;
+
+  // Обновление подсветки вкладок
+  const tabs = ['privacy', 'terms', 'disclaimer'];
+  tabs.forEach(t => {
+    const btn = document.getElementById(`tab${t.charAt(0).toUpperCase() + t.slice(1)}Btn`);
+    if (!btn) return;
+
+    if (t === tab) {
+      btn.className = 'px-3 py-1.5 rounded-lg text-slate-900 dark:text-white bg-white dark:bg-slate-800 shadow-xs border border-slate-200/80 dark:border-slate-700 font-semibold cursor-pointer';
+    } else {
+      btn.className = 'px-3 py-1.5 rounded-lg text-slate-500 hover:text-slate-900 dark:hover:text-white transition cursor-pointer';
+    }
+  });
+
+  if (window.lucide) lucide.createIcons();
+}
+
+// Закрытие модального окна по клавише Escape
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    closeLegalModal();
+    closeBookingModal();
+    closeDetailModal();
+  }
+});
+

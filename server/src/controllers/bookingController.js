@@ -9,8 +9,17 @@ export async function createBooking(req, res, next) {
   try {
     const rawData = req.body;
 
-    // 1. Валидация входных данных
-    const { isValid, errors, sanitized } = validateBookingData(rawData);
+    // 1. Валидация входных данных, проверка Honeypot и санитизация
+    const { isValid, isBot, errors, sanitized } = validateBookingData(rawData);
+
+    if (isBot) {
+      // Бот попался в ловушку Honeypot - мгновенный ответ без тревоги Telegram
+      return res.status(400).json({
+        success: false,
+        message: 'Запрос отклонен системой защиты от спама',
+        isBot: true
+      });
+    }
 
     if (!isValid) {
       return res.status(400).json({
@@ -24,20 +33,12 @@ export async function createBooking(req, res, next) {
     const bookingId = `MB-${Math.floor(100000 + Math.random() * 900000)}`;
     const createdAt = new Date().toISOString();
 
-    const bookingRecord = {
-      id: bookingId,
-      ...sanitized,
-      createdAt,
-      status: 'PENDING'
-    };
-
     // 3. Отправка в Telegram
     let telegramResult;
     try {
       telegramResult = await sendBookingNotification(sanitized, bookingId);
     } catch (telegramError) {
       console.error('❌ Ошибка отправки в Telegram Bot API:', telegramError.message);
-      // Возвращаем 502 или 500 с понятным описанием, чтобы клиент знал статус
       return res.status(500).json({
         success: false,
         message: 'Не удалось доставить уведомление в Telegram-канал координатора',

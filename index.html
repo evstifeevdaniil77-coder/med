@@ -234,6 +234,12 @@
         </div>
 
         <form id="bookingForm" onsubmit="handleBookingSubmit(event)" class="space-y-3 text-xs">
+          <!-- Honeypot Field (Anti-Bot Trap) -->
+          <div style="position: absolute; left: -9999px; top: -9999px; opacity: 0; pointer-events: none; width: 0; height: 0; overflow: hidden;" aria-hidden="true">
+            <label for="hp_user_website">Leave this field empty</label>
+            <input type="text" id="hp_user_website" name="hp_user_website" tabindex="-1" autocomplete="off">
+          </div>
+
           <div>
             <label class="block font-medium text-slate-700 dark:text-slate-300 mb-1">ФИО пациента или представителя
               *</label>
@@ -276,6 +282,13 @@
               <span>Отправить заявку</span>
             </button>
           </div>
+
+          <p class="text-[10px] text-slate-400 dark:text-slate-500 text-center leading-normal pt-1">
+            Нажимая кнопку «Отправить заявку», вы даете согласие на обработку персональных данных и соглашаетесь с 
+            <button type="button" onclick="openLegalModal('privacy')" class="underline text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white cursor-pointer">Политикой конфиденциальности</button> 
+            и 
+            <button type="button" onclick="openLegalModal('terms')" class="underline text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white cursor-pointer">Пользовательским соглашением</button>.
+          </p>
         </form>
       </div>
 
@@ -306,26 +319,93 @@
     </div>
   </div>
 
+  <!-- Legal Modal (Privacy Policy & Terms of Service) -->
+  <div id="legalModal" class="fixed inset-0 z-[9999] hidden overflow-y-auto p-4 sm:p-6 flex items-center justify-center">
+    <div class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs" onclick="closeLegalModal()"></div>
+    <div
+      class="relative w-full max-w-2xl bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden z-10 flex flex-col max-h-[85vh]">
+      
+      <!-- Modal Header -->
+      <div class="px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between shrink-0">
+        <div class="flex items-center gap-2.5">
+          <div class="p-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200">
+            <i data-lucide="shield-check" class="h-4 w-4"></i>
+          </div>
+          <h3 id="legalModalTitle" class="text-base font-bold text-slate-900 dark:text-white">Юридическая информация</h3>
+        </div>
+        <button onclick="closeLegalModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+          <i data-lucide="x" class="h-4 w-4"></i>
+        </button>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <div class="px-6 pt-3 pb-1 border-b border-slate-100 dark:border-slate-800 flex items-center gap-2 text-xs font-medium shrink-0 bg-slate-50/50 dark:bg-slate-900/50">
+        <button id="tabPrivacyBtn" onclick="switchLegalTab('privacy')"
+          class="px-3 py-1.5 rounded-lg text-slate-900 dark:text-white bg-white dark:bg-slate-800 shadow-xs border border-slate-200/80 dark:border-slate-700">Политика конфиденциальности</button>
+        <button id="tabTermsBtn" onclick="switchLegalTab('terms')"
+          class="px-3 py-1.5 rounded-lg text-slate-500 hover:text-slate-900 dark:hover:text-white transition">Пользовательское соглашение</button>
+        <button id="tabDisclaimerBtn" onclick="switchLegalTab('disclaimer')"
+          class="px-3 py-1.5 rounded-lg text-slate-500 hover:text-slate-900 dark:hover:text-white transition">Дисклеймер</button>
+      </div>
+
+      <!-- Scrollable Body Content -->
+      <div class="p-6 overflow-y-auto text-xs leading-relaxed text-slate-600 dark:text-slate-300 space-y-4" id="legalModalContent">
+        <!-- Injected via JavaScript -->
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="px-6 py-3 border-t border-slate-100 dark:border-slate-800 flex justify-end shrink-0 bg-slate-50/50 dark:bg-slate-900/50">
+        <button onclick="closeLegalModal()" class="px-4 py-2 rounded-lg bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-medium text-xs hover:bg-slate-800 transition cursor-pointer">
+          Понятно
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- Footer -->
   <footer
-    class="border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-xs text-slate-500 dark:text-slate-400 py-8 transition-colors">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-      <div class="flex items-center gap-2">
-        <span class="font-semibold text-slate-700 dark:text-slate-200">MedBooking</span>
-        <span>·</span>
-        <span>Агрегатор больниц и клиник</span>
-        <span>·</span>
-        <span>Лицензированные учреждения</span>
+    class="border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-xs text-slate-500 dark:text-slate-400 py-10 transition-colors">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pb-6">
+        <div class="flex items-center gap-2">
+          <div class="flex h-6 w-6 items-center justify-center rounded bg-slate-900 dark:bg-white text-white dark:text-slate-900">
+            <i data-lucide="heart-pulse" class="h-3 w-3"></i>
+          </div>
+          <span class="font-bold text-slate-900 dark:text-white">MedBooking</span>
+          <span>·</span>
+          <span>Международный медицинский агрегатор</span>
+        </div>
+        <div class="flex items-center gap-4 text-slate-600 dark:text-slate-400 font-medium">
+          <a href="tel:+992446008822" class="hover:text-slate-900 dark:hover:text-white transition-colors">+992 44 600 8822 (TJ)</a>
+          <span>·</span>
+          <a href="tel:+998712004040" class="hover:text-slate-900 dark:hover:text-white transition-colors">+998 71 200 4040 (UZ)</a>
+          <span>·</span>
+          <a href="tel:+902129883344" class="hover:text-slate-900 dark:hover:text-white transition-colors">+90 212 988 3344 (TR)</a>
+        </div>
       </div>
-      <div class="flex items-center gap-4 text-slate-600 dark:text-slate-400">
-        <a href="tel:+992446008822" class="hover:text-slate-900 dark:hover:text-white transition-colors">+992 44 600
-          8822 (TJ)</a>
-        <span>·</span>
-        <a href="tel:+998712004040" class="hover:text-slate-900 dark:hover:text-white transition-colors">+998 71 200
-          4040 (UZ)</a>
-        <span>·</span>
-        <a href="tel:+902129883344" class="hover:text-slate-900 dark:hover:text-white transition-colors">+90 212 988
-          3344 (TR)</a>
+
+      <!-- Medical Disclaimer Card -->
+      <div class="pt-6 border-t border-slate-100 dark:border-slate-800">
+        <div class="flex items-start gap-3 bg-slate-50 dark:bg-slate-950/60 p-4 rounded-xl border border-slate-200/80 dark:border-slate-800/80 text-[11px] leading-relaxed text-slate-500 dark:text-slate-400">
+          <i data-lucide="shield-alert" class="h-4 w-4 text-amber-500 shrink-0 mt-0.5"></i>
+          <p>
+            <strong class="text-slate-700 dark:text-slate-200">Дисклеймер:</strong> Платформа MedBooking является информационным агрегатором. Сервис не оказывает медицинские услуги напрямую, не ставит диагнозы и не назначает лечение. Все медицинские услуги предоставляются непосредственно лицензированными партнерскими клиниками и специалистами. Перед применением любых медицинских программ проконсультируйтесь с лечащим врачом.
+          </p>
+        </div>
+
+        <!-- Legal Navigation Links & Copyright -->
+        <div class="mt-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-slate-400 dark:text-slate-500">
+          <div class="flex flex-wrap items-center gap-3">
+            <button type="button" onclick="openLegalModal('privacy')" class="hover:underline hover:text-slate-700 dark:hover:text-slate-300 transition cursor-pointer">Политика конфиденциальности</button>
+            <span>·</span>
+            <button type="button" onclick="openLegalModal('terms')" class="hover:underline hover:text-slate-700 dark:hover:text-slate-300 transition cursor-pointer">Пользовательское соглашение</button>
+            <span>·</span>
+            <button type="button" onclick="openLegalModal('disclaimer')" class="hover:underline hover:text-slate-700 dark:hover:text-slate-300 transition cursor-pointer">Медицинский отказ от ответственности</button>
+          </div>
+          <div>
+            © 2026 MedBooking International. Все права защищены.
+          </div>
+        </div>
       </div>
     </div>
   </footer>

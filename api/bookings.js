@@ -2,10 +2,12 @@ import { validateBookingData } from '../server/src/validators/bookingValidator.j
 import { sendBookingNotification } from '../server/src/services/telegramService.js';
 
 export default async function handler(req, res) {
-  // Настройка CORS для Vercel Serverless
+  // Заголовки безопасности и CORS для Vercel Serverless
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'SAMEORIGIN');
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
+  res.setHeader('Access-Control-Allow-Methods', 'POST,OPTIONS');
   res.setHeader(
     'Access-Control-Allow-Headers',
     'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization'
@@ -25,8 +27,16 @@ export default async function handler(req, res) {
   try {
     const rawData = req.body || {};
 
-    // 1. Валидация
-    const { isValid, errors, sanitized } = validateBookingData(rawData);
+    // 1. Валидация, Honeypot проверка и санитизация
+    const { isValid, isBot, errors, sanitized } = validateBookingData(rawData);
+
+    if (isBot) {
+      return res.status(400).json({
+        success: false,
+        message: 'Запрос заблокирован системой безопасности',
+        isBot: true
+      });
+    }
 
     if (!isValid) {
       return res.status(400).json({
