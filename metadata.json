@@ -1,0 +1,6 @@
+{
+  "name": "RehabConnect / MedBooking",
+  "description": "Международный агрегатор для поиска и бронирования клиник, рехабов и записи к врачам.",
+  "requestFramePermissions": ["geolocation"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

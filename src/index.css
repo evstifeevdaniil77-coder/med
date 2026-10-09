@@ -1,0 +1,43 @@
+@import "tailwindcss";
+
+/* Leaflet map custom styling overrides */
+.clinic-custom-marker {
+  background: transparent !important;
+  border: none !important;
+}
+
+.user-geo-pin {
+  background: transparent !important;
+  border: none !important;
+}
+
+.leaflet-popup-content-wrapper {
+  padding: 0 !important;
+  border-radius: 1rem !important;
+  overflow: hidden !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1) !important;
+  border: 1px solid #e2e8f0 !important;
+}
+
+.leaflet-popup-content {
+  margin: 0 !important;
+  line-height: inherit !important;
+}
+
+.leaflet-popup-tip {
+  background: #ffffff !important;
+}
+
+/* OpenStreetMap Dark Mode filter - no API key needed */
+.dark .leaflet-tile-pane {
+  filter: brightness(0.6) invert(1) contrast(3) hue-rotate(200deg) saturate(0.3);
+}
+
+.dark .leaflet-popup-content-wrapper {
+  background: #0f172a !important;
+  border-color: #1e293b !important;
+}
+
+.dark .leaflet-popup-tip {
+  background: #0f172a !important;
+}
