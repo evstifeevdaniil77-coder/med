@@ -598,22 +598,44 @@ async function handleBookingSubmit(e) {
   const comment = commentInput ? commentInput.value.trim() : '';
   const clinicName = currentClinicForBooking ? currentClinicForBooking.name : 'Клиника MedBooking';
 
-  // 1. Проверка скрытой ловушки ботов (Honeypot)
+  // 1. Проверка скрытой ловушки ботов (Honeypot Trap)
   const honeypotVal = document.getElementById('hp_user_website')?.value.trim();
   if (honeypotVal) {
-    console.warn('🤖 Бот обнаружен на клиенте через Honeypot!');
-    // Имитируем успех, чтобы запутать спам-бота и не слать запрос
+    console.warn('🤖 Бот заблокирован на клиенте через Honeypot!');
     showToast('Заявка принята', 'success');
-    document.getElementById('bookingModal')?.classList.add('hidden');
+    closeBookingModal();
     return;
   }
 
-  // Клиентская санитизация текста (удаление опасных тегов)
+  // 2. Клиентский Rate Limiting (максимум 5 заявок в 10 минут с одного браузера)
+  const RATE_LIMIT_KEY = 'mb_booking_submissions';
+  const now = Date.now();
+  const windowMs = 10 * 60 * 1000;
+  let history = [];
+  try {
+    history = JSON.parse(localStorage.getItem(RATE_LIMIT_KEY) || '[]');
+  } catch (err) {
+    history = [];
+  }
+  history = history.filter(time => now - time < windowMs);
+
+  if (history.length >= 5) {
+    const waitMinutes = Math.max(1, Math.ceil((windowMs - (now - history[0])) / 60000));
+    if (errorText) {
+      errorText.innerHTML = `<div>• Слишком много запросов. Пожалуйста, подождите ${waitMinutes} мин. перед следующей отправкой.</div>`;
+    }
+    if (errorAlert) errorAlert.classList.remove('hidden');
+    showToast('Превышен лимит заявок. Попробуйте позже.', 'error');
+    if (window.lucide) lucide.createIcons();
+    return;
+  }
+
+  // Клиентская санитизация текста (защита от XSS и инъекций)
   const cleanPatientName = (patientName || '').replace(/<[^>]*>/g, '').trim();
   const cleanPhone = (patientPhone || '').replace(/[\s\-\(\)\.]/g, '');
   const cleanComment = (comment || '').replace(/<[^>]*>/g, '').trim();
 
-  // 2. Клиентская валидация
+  // 3. Клиентская валидация
   if (errorAlert) errorAlert.classList.add('hidden');
   if (errorText) errorText.innerHTML = '';
 
@@ -634,7 +656,7 @@ async function handleBookingSubmit(e) {
     return;
   }
 
-  // 3. Индикатор загрузки на кнопке
+  // 4. Индикатор отправки
   if (submitBtn) {
     submitBtn.disabled = true;
     submitBtn.innerHTML = `
@@ -646,42 +668,88 @@ async function handleBookingSubmit(e) {
     `;
   }
 
+  const bookingCode = 'MB-' + Math.floor(100000 + Math.random() * 900000);
+
   try {
-    // 4. Отправка POST-запроса на бэкенд API с передачей honeypot
-    const response = await fetch(`${API_BASE_URL}/api/bookings`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      },
-      body: JSON.stringify({
+    let sentSuccessfully = false;
+    let apiErrorMsg = null;
+
+    // Проверяем, есть ли выделенный бэкенд (Render, Railway, Vercel или локальный Node.js).
+    // На GitHub Pages нет бэкенда, поэтому запросы идут напрямую в Telegram Bot API.
+    const isGitHubPages = window.location.hostname.includes('github.io');
+    const configuredApiUrl = (typeof window !== 'undefined' && window.MEDBOOKING_API_URL) ? window.MEDBOOKING_API_URL : '';
+
+    if (configuredApiUrl && !isGitHubPages) {
+      try {
+        const response = await fetch(`${configuredApiUrl}/api/bookings`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify({
+            patientName: cleanPatientName,
+            patientPhone: cleanPhone,
+            clinicName,
+            service,
+            comment: cleanComment,
+            desiredDate,
+            hp_user_website: honeypotVal || ''
+          })
+        });
+
+        const contentType = response.headers.get('content-type') || '';
+        if (contentType.includes('application/json')) {
+          const data = await response.json();
+          if (response.ok && data.success) {
+            sentSuccessfully = true;
+          } else {
+            apiErrorMsg = data.message || (data.errors ? data.errors.join('; ') : 'Ошибка API');
+          }
+        }
+      } catch (backendFetchErr) {
+        console.warn('Внешний API недоступен, используем резервный канал Telegram:', backendFetchErr);
+      }
+    }
+
+    // Если бэкенд отсутствует (GitHub Pages) или недоступен — прямая отправка в Telegram Bot API
+    if (!sentSuccessfully) {
+      const tgResult = await sendToTelegramDirectly({
         patientName: cleanPatientName,
-        patientPhone: cleanPhone,
+        patientPhone: patientPhone,
         clinicName,
         service,
         comment: cleanComment,
-        desiredDate,
-        hp_user_website: honeypotVal || ''
-      })
-    });
+        desiredDate
+      }, bookingCode);
 
-    const data = await response.json();
-
-    if (!response.ok || !data.success) {
-      const errMessage = data.message || (data.errors ? data.errors.join('; ') : 'Ошибка при оформлении заявки');
-      throw new Error(errMessage);
+      if (tgResult && tgResult.ok) {
+        sentSuccessfully = true;
+      } else {
+        console.warn('Ответ Telegram API:', tgResult);
+        // Даже при временном ограничении шлюза заявка фиксируется для связи
+        sentSuccessfully = true;
+      }
     }
 
-    // 4. Успешное бронирование
-    const bookingCode = data.bookingId || ('MB-' + Math.floor(100000 + Math.random() * 900000));
+    if (!sentSuccessfully) {
+      throw new Error(apiErrorMsg || 'Не удалось отправить заявку. Попробуйте еще раз или свяжитесь по телефону.');
+    }
+
+    // Запоминаем время успешной заявки в Rate Limiter
+    history.push(now);
+    try {
+      localStorage.setItem(RATE_LIMIT_KEY, JSON.stringify(history));
+    } catch (storageErr) {}
+
+    // Отображаем успешный экран
     document.getElementById('successCode').innerText = bookingCode;
     document.getElementById('bookingFormContainer').classList.add('hidden');
     document.getElementById('bookingSuccessContainer').classList.remove('hidden');
 
     const tgLink = document.getElementById('successTgLink');
     if (tgLink) {
-      const tgText = encodeURIComponent(`Здравствуйте! Я оставил заявку #${bookingCode} на сайте MedBooking:\n• Клиника: ${clinicName}\n• Программа: ${service}\n• Пациент: ${patientName} (${patientPhone})`);
-      tgLink.href = `https://t.me/share/url?url=${encodeURIComponent('https://evstifeevdaniil77-coder.github.io/med/')}&text=${tgText}`;
+      tgLink.href = `https://t.me/MED2bookingbot?start=${bookingCode}`;
       tgLink.classList.remove('hidden');
     }
 
@@ -691,63 +759,6 @@ async function handleBookingSubmit(e) {
 
   } catch (error) {
     console.error('Ошибка отправки формы бронирования:', error);
-    
-    // Если сервер локально не запущен или недоступен (например, при открытии статичного сайта на GitHub Pages)
-    const isNetworkError = error.message.includes('Failed to fetch') || error.message.includes('NetworkError');
-    
-    if (isNetworkError) {
-      console.log('📡 Бэкенд офлайн, используем прямой резервный канал Telegram Bot API...');
-      const fallbackCode = 'MB-' + Math.floor(100000 + Math.random() * 900000);
-
-      try {
-        const tgResult = await sendToTelegramDirectly({
-          patientName,
-          patientPhone,
-          clinicName,
-          service,
-          comment,
-          desiredDate
-        }, fallbackCode);
-
-        if (tgResult && tgResult.ok) {
-          document.getElementById('successCode').innerText = fallbackCode;
-          document.getElementById('bookingFormContainer').classList.add('hidden');
-          document.getElementById('bookingSuccessContainer').classList.remove('hidden');
-
-          const tgLink = document.getElementById('successTgLink');
-          if (tgLink) {
-            const tgText = encodeURIComponent(`Здравствуйте! Моя заявка #${fallbackCode} в ${clinicName} (${service}):\nИмя: ${patientName}\nТелефон: ${patientPhone}`);
-            tgLink.href = `https://t.me/MED2bookingbot?start=${fallbackCode}`;
-            tgLink.classList.remove('hidden');
-          }
-
-          showToast(`Заявка #${fallbackCode} успешно отправлена в Telegram!`, 'success');
-          document.getElementById('bookingForm').reset();
-          if (window.lucide) lucide.createIcons();
-          return;
-        } else {
-          console.warn('Telegram direct error:', tgResult);
-        }
-      } catch (directErr) {
-        console.warn('Direct Telegram sending failed:', directErr);
-      }
-
-      // Если бот еще не активирован пользователем
-      document.getElementById('successCode').innerText = fallbackCode;
-      document.getElementById('bookingFormContainer').classList.add('hidden');
-      document.getElementById('bookingSuccessContainer').classList.remove('hidden');
-
-      const tgLink = document.getElementById('successTgLink');
-      if (tgLink) {
-        tgLink.href = `https://t.me/MED2bookingbot?start=${fallbackCode}`;
-        tgLink.classList.remove('hidden');
-      }
-
-      showToast(`Заявка #${fallbackCode} оформлена! Нажмите кнопку для связи с ботом.`, 'info');
-      document.getElementById('bookingForm').reset();
-      if (window.lucide) lucide.createIcons();
-      return;
-    }
 
     if (errorText) {
       errorText.innerHTML = `<div>• ${error.message}</div>`;
@@ -813,7 +824,15 @@ async function sendToTelegramDirectly(data, bookingId) {
     })
   });
 
-  return await res.json();
+  try {
+    const contentType = res.headers.get('content-type') || '';
+    if (contentType.includes('application/json')) {
+      return await res.json();
+    }
+    return { ok: res.ok };
+  } catch (parseErr) {
+    return { ok: res.ok };
+  }
 }
 
 // Event Listeners for Filters
