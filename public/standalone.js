@@ -313,29 +313,20 @@ function setMapLayer(layer) {
 
 function updateMapTiles() {
   if (tileLayer) map.removeLayer(tileLayer);
-  const isDark = document.documentElement.classList.contains('dark');
 
-  let tileUrl = 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png';
-  let attribution = '&copy; 2ГИС Интеграция · CartoDB & OSM';
-
-  // Если задан официальный ключ 2ГИС, используем серверы тайлов 2ГИС
-  const twoGisKey = (typeof window !== 'undefined' && window.TWOGIS_API_KEY) ? window.TWOGIS_API_KEY : '';
+  let tileUrl = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
+  let attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> · Навигация 2ГИС';
 
   if (currentMapLayer === '2gis') {
-    if (twoGisKey) {
-      tileUrl = `https://tile0.maps.2gis.com/v2/tiles/online_hd/{z}/{x}/{y}.png?key=${twoGisKey}`;
-      attribution = '&copy; 2ГИС (Официальные тайлы)';
-    } else {
-      // Высококонтрастная городская подложка с дорогами и зданиями в стиле 2ГИС
-      tileUrl = isDark
-        ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
-        : 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png';
-      attribution = '&copy; 2ГИС интеграция · CartoDB';
-    }
+    // Надежный, быстрый глобальный слой OpenStreetMap с навигацией 2ГИС
+    tileUrl = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
+    attribution = '&copy; OpenStreetMap · Интеграция 2ГИС';
   } else if (currentMapLayer === 'voyager') {
-    tileUrl = 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png';
-    attribution = '&copy; CartoDB Positron';
+    // Детализированный слой OpenStreetMap Humanitarian (HOT)
+    tileUrl = 'https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png';
+    attribution = '&copy; OpenStreetMap (HOT)';
   } else if (currentMapLayer === 'satellite') {
+    // Спутниковые снимки высокого разрешения Esri
     tileUrl = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';
     attribution = '&copy; Esri World Imagery (Спутник)';
   }
