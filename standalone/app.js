@@ -281,9 +281,11 @@ document.getElementById('themeToggleBtn').addEventListener('click', () => {
   updateThemeIcon();
 });
 
+// Map Layer State
+let currentMapLayer = '2gis';
+
 // Map Initialization
 function initMap() {
-  const isDark = document.documentElement.classList.contains('dark');
   map = L.map('map', {
     center: [41.3195, 69.2787],
     zoom: 6,
@@ -291,13 +293,55 @@ function initMap() {
   });
 
   L.control.zoom({ position: 'bottomright' }).addTo(map);
-  updateMapTiles(isDark);
+  updateMapTiles();
+}
+
+function setMapLayer(layer) {
+  currentMapLayer = layer;
+  ['2gis', 'voyager', 'satellite'].forEach(l => {
+    const btn = document.getElementById(`mapBtn${l.charAt(0).toUpperCase() + l.slice(1)}`);
+    if (btn) {
+      if (l === layer) {
+        btn.className = 'px-2 py-0.5 rounded-md text-slate-900 dark:text-white bg-white dark:bg-slate-700 shadow-xs transition cursor-pointer font-medium';
+      } else {
+        btn.className = 'px-2 py-0.5 rounded-md hover:text-slate-900 dark:hover:text-white transition cursor-pointer';
+      }
+    }
+  });
+  updateMapTiles();
 }
 
 function updateMapTiles() {
   if (tileLayer) map.removeLayer(tileLayer);
-  tileLayer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+  const isDark = document.documentElement.classList.contains('dark');
+
+  let tileUrl = 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png';
+  let attribution = '&copy; 2ГИС Интеграция · CartoDB & OSM';
+
+  // Если задан официальный ключ 2ГИС, используем серверы тайлов 2ГИС
+  const twoGisKey = (typeof window !== 'undefined' && window.TWOGIS_API_KEY) ? window.TWOGIS_API_KEY : '';
+
+  if (currentMapLayer === '2gis') {
+    if (twoGisKey) {
+      tileUrl = `https://tile0.maps.2gis.com/v2/tiles/online_hd/{z}/{x}/{y}.png?key=${twoGisKey}`;
+      attribution = '&copy; 2ГИС (Официальные тайлы)';
+    } else {
+      // Высококонтрастная городская подложка с дорогами и зданиями в стиле 2ГИС
+      tileUrl = isDark
+        ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
+        : 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png';
+      attribution = '&copy; 2ГИС интеграция · CartoDB';
+    }
+  } else if (currentMapLayer === 'voyager') {
+    tileUrl = 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png';
+    attribution = '&copy; CartoDB Positron';
+  } else if (currentMapLayer === 'satellite') {
+    tileUrl = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';
+    attribution = '&copy; Esri World Imagery (Спутник)';
+  }
+
+  tileLayer = L.tileLayer(tileUrl, {
+    attribution: attribution,
     maxZoom: 19
   }).addTo(map);
 }
@@ -309,30 +353,42 @@ function updateMapMarkers(clinics) {
   const isDark = document.documentElement.classList.contains('dark');
 
   clinics.forEach(c => {
+    // Стильный зеленый пин 2ГИС с рейтингом клиники
     const icon = L.divIcon({
       className: 'clinic-custom-marker',
       html: `
-        <div class="cursor-pointer transition-transform duration-150 hover:scale-105">
-          <div class="flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-semibold shadow-sm border ${
-            isDark ? 'bg-slate-900 text-white border-slate-700' : 'bg-white text-slate-900 border-slate-300'
+        <div class="cursor-pointer transition-transform duration-150 hover:scale-110">
+          <div class="flex items-center gap-1.5 rounded-full pl-1.5 pr-2 py-0.5 text-xs font-bold shadow-md border ${
+            isDark
+              ? 'bg-slate-900 text-white border-emerald-500/80 shadow-emerald-950/50'
+              : 'bg-white text-slate-900 border-emerald-500 shadow-slate-300'
           }">
-            <span>★</span>
+            <span class="inline-flex items-center justify-center w-3.5 h-3.5 rounded-full bg-emerald-500 text-white text-[9px] font-black leading-none">2</span>
             <span>${c.rating}</span>
           </div>
         </div>
       `,
-      iconSize: [50, 24],
-      iconAnchor: [25, 24]
+      iconSize: [60, 24],
+      iconAnchor: [30, 24]
     });
 
     const marker = L.marker([c.lat, c.lng], { icon }).addTo(map);
 
+    const twoGisRouteUrl = `https://2gis.ru/routeSearch/rsType/car/to/${c.lng},${c.lat}`;
+
     const popupHtml = `
-      <div class="w-56 p-2 font-sans ${isDark ? 'bg-slate-900 text-white' : 'bg-white text-slate-900'}">
-        <img src="${c.images[0]}" class="h-20 w-full object-cover rounded mb-1.5" />
+      <div class="w-60 p-2.5 font-sans ${isDark ? 'bg-slate-900 text-white' : 'bg-white text-slate-900'}">
+        <img src="${c.images[0]}" class="h-24 w-full object-cover rounded-lg mb-2" />
         <h4 class="font-bold text-xs line-clamp-1">${c.name}</h4>
-        <p class="text-[11px] text-slate-500">${c.city} · от $${c.minPrice}</p>
-        <button onclick="openClinicDetail('${c.id}')" class="mt-2 w-full py-1 text-[11px] rounded bg-slate-900 dark:bg-white text-white dark:text-slate-900">Подробнее</button>
+        <p class="text-[11px] text-slate-500 mt-0.5">${c.city} · ${c.address}</p>
+        <p class="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 mt-1">от $${c.minPrice}</p>
+        <div class="mt-2.5 flex items-center gap-1.5">
+          <button onclick="openClinicDetail('${c.id}')" class="flex-1 py-1.5 text-[11px] font-medium rounded-lg bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:opacity-90 transition cursor-pointer">Подробнее</button>
+          <a href="${twoGisRouteUrl}" target="_blank" rel="noopener" class="inline-flex items-center gap-1 px-2.5 py-1.5 text-[11px] font-semibold rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white transition cursor-pointer" title="Построить маршрут в 2ГИС">
+            <span>2ГИС</span>
+            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+          </a>
+        </div>
       </div>
     `;
     marker.bindPopup(popupHtml);
@@ -467,9 +523,12 @@ function renderClinics() {
                 <span class="text-slate-400">от </span>
                 <span class="font-semibold text-slate-900 dark:text-white text-sm">$${c.minPrice}</span>
               </div>
-              <div class="flex items-center gap-2">
-                <button onclick="openClinicDetail('${c.id}')" class="px-3 py-1.5 text-xs font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white rounded-lg">Подробнее</button>
-                <button onclick="openBookingModal('${c.id}')" class="px-3.5 py-1.5 text-xs font-medium bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-slate-200 text-white dark:text-slate-950 rounded-lg">Записаться</button>
+              <div class="flex items-center gap-1.5">
+                <a href="https://2gis.ru/routeSearch/rsType/car/to/${c.lng},${c.lat}" target="_blank" rel="noopener" title="Проложить маршрут в 2ГИС" class="inline-flex items-center gap-1 px-2.5 py-1.5 text-xs font-semibold rounded-lg bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-100 dark:hover:bg-emerald-900/40 transition cursor-pointer">
+                  <span>2ГИС</span>
+                </a>
+                <button onclick="openClinicDetail('${c.id}')" class="px-3 py-1.5 text-xs font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white rounded-lg cursor-pointer">Подробнее</button>
+                <button onclick="openBookingModal('${c.id}')" class="px-3.5 py-1.5 text-xs font-medium bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-slate-200 text-white dark:text-slate-950 rounded-lg cursor-pointer">Записаться</button>
               </div>
             </div>
           </div>
@@ -532,9 +591,15 @@ function openClinicDetail(id) {
       `).join('')}
     </div>
 
-    <div class="flex justify-end gap-2 pt-3 border-t border-slate-100 dark:border-slate-800">
-      <button onclick="closeDetailModal()" class="px-3 py-1.5 rounded-lg text-xs text-slate-600 dark:text-slate-400">Закрыть</button>
-      <button onclick="closeDetailModal(); openBookingModal('${clinic.id}');" class="px-4 py-2 rounded-lg bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-xs font-medium">Забронировать палату</button>
+    <div class="flex items-center justify-between gap-2 pt-3 border-t border-slate-100 dark:border-slate-800">
+      <a href="https://2gis.ru/routeSearch/rsType/car/to/${clinic.lng},${clinic.lat}" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-emerald-300 dark:border-emerald-700 bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 text-xs font-semibold hover:bg-emerald-100 dark:hover:bg-emerald-900/40 transition cursor-pointer">
+        <span>📍 Маршрут в 2ГИС</span>
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+      </a>
+      <div class="flex items-center gap-2">
+        <button onclick="closeDetailModal()" class="px-3 py-1.5 rounded-lg text-xs text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer">Закрыть</button>
+        <button onclick="closeDetailModal(); openBookingModal('${clinic.id}');" class="px-4 py-2 rounded-lg bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-xs font-medium hover:bg-slate-800 transition cursor-pointer">Забронировать палату</button>
+      </div>
     </div>
   `;
 

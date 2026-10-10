@@ -36,6 +36,9 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
+  <!-- 2GIS MapGL JS API -->
+  <script src="https://mapgl.2gis.com/api/js/v1"></script>
+
   <!-- Lucide Icons CDN -->
   <script src="https://unpkg.com/lucide@latest"></script>
 
@@ -167,11 +170,25 @@
         <!-- Rendered via JS -->
       </div>
 
-      <!-- Sticky Leaflet Map -->
+      <!-- Sticky Map Container with 2GIS Mode -->
       <div class="lg:col-span-5 sticky top-20">
         <div
-          class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200/80 dark:border-slate-800 p-2 shadow-xs transition-colors">
-          <div id="map" class="h-[480px] w-full rounded-lg"></div>
+          class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200/80 dark:border-slate-800 p-2.5 shadow-xs transition-colors">
+          <!-- Map Header / Mode Switcher -->
+          <div class="flex items-center justify-between pb-2 px-1 text-xs">
+            <div class="flex items-center gap-1.5 font-semibold text-slate-800 dark:text-slate-200">
+              <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+              <span>Карта отделений</span>
+              <span class="text-[10px] font-bold text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/80 px-1.5 py-0.5 rounded">2ГИС</span>
+            </div>
+            <!-- Layer Switcher -->
+            <div class="flex items-center gap-1 bg-slate-100 dark:bg-slate-800 p-0.5 rounded-lg text-[11px] font-medium text-slate-500">
+              <button id="mapBtn2Gis" onclick="setMapLayer('2gis')" class="px-2 py-0.5 rounded-md text-slate-900 dark:text-white bg-white dark:bg-slate-700 shadow-xs transition cursor-pointer font-medium">2ГИС</button>
+              <button id="mapBtnVoyager" onclick="setMapLayer('voyager')" class="px-2 py-0.5 rounded-md hover:text-slate-900 dark:hover:text-white transition cursor-pointer">Светлая</button>
+              <button id="mapBtnSatellite" onclick="setMapLayer('satellite')" class="px-2 py-0.5 rounded-md hover:text-slate-900 dark:hover:text-white transition cursor-pointer">Спутник</button>
+            </div>
+          </div>
+          <div id="map" class="h-[480px] w-full rounded-lg overflow-hidden"></div>
         </div>
       </div>
     </div>
