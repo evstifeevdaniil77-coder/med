@@ -281,8 +281,9 @@ document.getElementById('themeToggleBtn').addEventListener('click', () => {
   updateThemeIcon();
 });
 
-// Map Layer State
-let currentMapLayer = '2gis';
+// Map Layer State (По умолчанию: Esri World Imagery)
+let currentMapLayer = 'satellite';
+let labelLayer = null;
 
 // Map Initialization
 function initMap() {
@@ -298,7 +299,7 @@ function initMap() {
 
 function setMapLayer(layer) {
   currentMapLayer = layer;
-  ['2gis', 'voyager', 'satellite'].forEach(l => {
+  ['satellite', 'scheme', 'standard'].forEach(l => {
     const btn = document.getElementById(`mapBtn${l.charAt(0).toUpperCase() + l.slice(1)}`);
     if (btn) {
       if (l === layer) {
@@ -313,28 +314,35 @@ function setMapLayer(layer) {
 
 function updateMapTiles() {
   if (tileLayer) map.removeLayer(tileLayer);
+  if (labelLayer) map.removeLayer(labelLayer);
 
-  let tileUrl = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
-  let attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> · Навигация 2ГИС';
+  if (currentMapLayer === 'satellite') {
+    // 🛰️ Esri World Imagery (Спутниковые снимки высокой четкости)
+    tileLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+      attribution: 'Imagery &copy; <a href="https://www.esri.com/">Esri</a> &mdash; DigitalGlobe, GeoEye, Earthstar Geographics',
+      maxZoom: 19
+    }).addTo(map);
 
-  if (currentMapLayer === '2gis') {
-    // Надежный, быстрый глобальный слой OpenStreetMap с навигацией 2ГИС
-    tileUrl = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
-    attribution = '&copy; OpenStreetMap · Интеграция 2ГИС';
-  } else if (currentMapLayer === 'voyager') {
-    // Детализированный слой OpenStreetMap Humanitarian (HOT)
-    tileUrl = 'https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png';
-    attribution = '&copy; OpenStreetMap (HOT)';
-  } else if (currentMapLayer === 'satellite') {
-    // Спутниковые снимки высокого разрешения Esri
-    tileUrl = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';
-    attribution = '&copy; Esri World Imagery (Спутник)';
+    // Слой четких названий городов, улиц и границ поверх спутника (Esri Reference Labels)
+    labelLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', {
+      maxZoom: 19,
+      opacity: 0.95
+    }).addTo(map);
+
+  } else if (currentMapLayer === 'scheme') {
+    // Медицинская схема OpenStreetMap HOT
+    tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors (HOT)',
+      maxZoom: 19
+    }).addTo(map);
+
+  } else {
+    // Стандартный городской OpenStreetMap
+    tileLayer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors',
+      maxZoom: 19
+    }).addTo(map);
   }
-
-  tileLayer = L.tileLayer(tileUrl, {
-    attribution: attribution,
-    maxZoom: 19
-  }).addTo(map);
 }
 
 function updateMapMarkers(clinics) {
@@ -344,23 +352,19 @@ function updateMapMarkers(clinics) {
   const isDark = document.documentElement.classList.contains('dark');
 
   clinics.forEach(c => {
-    // Стильный зеленый пин 2ГИС с рейтингом клиники
+    // Высококонтрастный маркер со звездой и рейтингом, идеально читаемый на спутнике
     const icon = L.divIcon({
       className: 'clinic-custom-marker',
       html: `
         <div class="cursor-pointer transition-transform duration-150 hover:scale-110">
-          <div class="flex items-center gap-1.5 rounded-full pl-1.5 pr-2 py-0.5 text-xs font-bold shadow-md border ${
-            isDark
-              ? 'bg-slate-900 text-white border-emerald-500/80 shadow-emerald-950/50'
-              : 'bg-white text-slate-900 border-emerald-500 shadow-slate-300'
-          }">
-            <span class="inline-flex items-center justify-center w-3.5 h-3.5 rounded-full bg-emerald-500 text-white text-[9px] font-black leading-none">2</span>
-            <span>${c.rating}</span>
+          <div class="flex items-center gap-1.5 rounded-full pl-2 pr-2.5 py-1 text-xs font-bold shadow-xl border-2 border-emerald-500 bg-white/95 text-slate-900 backdrop-blur-xs">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span>★ ${c.rating}</span>
           </div>
         </div>
       `,
-      iconSize: [60, 24],
-      iconAnchor: [30, 24]
+      iconSize: [64, 26],
+      iconAnchor: [32, 26]
     });
 
     const marker = L.marker([c.lat, c.lng], { icon }).addTo(map);
@@ -368,13 +372,13 @@ function updateMapMarkers(clinics) {
     const twoGisRouteUrl = `https://2gis.ru/routeSearch/rsType/car/to/${c.lng},${c.lat}`;
 
     const popupHtml = `
-      <div class="w-60 p-2.5 font-sans ${isDark ? 'bg-slate-900 text-white' : 'bg-white text-slate-900'}">
-        <img src="${c.images[0]}" class="h-24 w-full object-cover rounded-lg mb-2" />
+      <div class="w-64 p-3 font-sans rounded-xl bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-2xl">
+        <img src="${c.images[0]}" class="h-28 w-full object-cover rounded-lg mb-2 shadow-xs" />
         <h4 class="font-bold text-xs line-clamp-1">${c.name}</h4>
-        <p class="text-[11px] text-slate-500 mt-0.5">${c.city} · ${c.address}</p>
-        <p class="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 mt-1">от $${c.minPrice}</p>
+        <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">${c.city} · ${c.address}</p>
+        <p class="text-xs font-bold text-emerald-600 dark:text-emerald-400 mt-1">от $${c.minPrice}</p>
         <div class="mt-2.5 flex items-center gap-1.5">
-          <button onclick="openClinicDetail('${c.id}')" class="flex-1 py-1.5 text-[11px] font-medium rounded-lg bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:opacity-90 transition cursor-pointer">Подробнее</button>
+          <button onclick="openClinicDetail('${c.id}')" class="flex-1 py-1.5 text-[11px] font-semibold rounded-lg bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:opacity-90 transition cursor-pointer">Подробнее</button>
           <a href="${twoGisRouteUrl}" target="_blank" rel="noopener" class="inline-flex items-center gap-1 px-2.5 py-1.5 text-[11px] font-semibold rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white transition cursor-pointer" title="Построить маршрут в 2ГИС">
             <span>2ГИС</span>
             <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
