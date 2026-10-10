@@ -1,12 +1,12 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ru">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MedBooking / RehabConnect вЂ” РџРѕРёСЃРє Рё Р±СЂРѕРЅРёСЂРѕРІР°РЅРёРµ Р±РѕР»СЊРЅРёС† Рё РєР»РёРЅРёРє</title>
+  <title>MedBooking / RehabConnect — Поиск и бронирование больниц и клиник</title>
   <meta name="description"
-    content="РњРµР¶РґСѓРЅР°СЂРѕРґРЅС‹Р№ Р°РіСЂРµРіР°С‚РѕСЂ РјРЅРѕРіРѕРїСЂРѕС„РёР»СЊРЅС‹С… Р±РѕР»СЊРЅРёС†, РєР»РёРЅРёРє Рё СЂРµС…Р°Р±РѕРІ РІ Р”СѓС€Р°РЅР±Рµ, РўР°С€РєРµРЅС‚Рµ Рё РЎС‚Р°РјР±СѓР»Рµ.">
+    content="Международный агрегатор многопрофильных больниц, клиник и рехабов в Душанбе, Ташкенте и Стамбуле.">
   <meta name="google-site-verification" content="OmjUO2nhRge5qso-rrwC-2fYbuXtWEwWF2VK7UFnChE">
 
   <!-- Google Fonts: Plus Jakarta Sans -->
@@ -60,24 +60,35 @@
 
       <!-- Navigation -->
       <nav class="hidden sm:flex items-center gap-6 text-xs font-medium text-slate-600 dark:text-slate-400">
-        <a href="#catalog" class="hover:text-slate-900 dark:hover:text-white transition-colors">Р‘РѕР»СЊРЅРёС†С‹ Рё РєР»РёРЅРёРєРё</a>
-        <a href="#how-it-works" class="hover:text-slate-900 dark:hover:text-white transition-colors">Рћ СЃРµСЂРІРёСЃРµ</a>
+        <a href="#catalog" class="hover:text-slate-900 dark:hover:text-white transition-colors">Больницы и клиники</a>
+        <a href="#how-it-works" class="hover:text-slate-900 dark:hover:text-white transition-colors">О сервисе</a>
+        <a href="javascript:void(0)" onclick="openPartnerModal()" class="text-emerald-600 dark:text-emerald-400 font-semibold hover:underline transition-colors flex items-center gap-1">
+          <i data-lucide="building-2" class="h-3.5 w-3.5"></i>
+          <span>Для клиник</span>
+        </a>
         <span class="text-slate-300 dark:text-slate-700">|</span>
-        <span class="text-slate-500 dark:text-slate-400">Р”СѓС€Р°РЅР±Рµ В· РўР°С€РєРµРЅС‚ В· РЎС‚Р°РјР±СѓР»</span>
+        <span class="text-slate-500 dark:text-slate-400">Душанбе · Ташкент · Стамбул</span>
       </nav>
 
-      <!-- Actions: Theme Toggle & Hotline -->
-      <div class="flex items-center gap-2.5">
+      <!-- Actions: Partner Button, Theme Toggle & Hotline -->
+      <div class="flex items-center gap-2">
+        <!-- Кнопка для клиник и партнеров -->
+        <button onclick="openPartnerModal()"
+          class="inline-flex items-center gap-1.5 rounded-lg border border-emerald-600/40 dark:border-emerald-500/40 bg-emerald-50/80 dark:bg-emerald-950/40 hover:bg-emerald-100 dark:hover:bg-emerald-900/60 text-emerald-700 dark:text-emerald-300 px-3 py-1.5 text-xs font-semibold transition cursor-pointer shadow-xs">
+          <i data-lucide="building-2" class="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400"></i>
+          <span>Клиникам / Партнерство</span>
+        </button>
+
         <button id="themeToggleBtn"
           class="p-2 rounded-lg text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer"
-          title="РџРµСЂРµРєР»СЋС‡РёС‚СЊ С‚РµРјСѓ">
+          title="Переключить тему">
           <i id="themeIcon" data-lucide="moon" class="h-4 w-4"></i>
         </button>
 
         <button onclick="openBookingModal()"
           class="inline-flex items-center gap-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-slate-200 text-white dark:text-slate-950 px-3.5 py-1.5 text-xs font-medium transition cursor-pointer">
           <i data-lucide="phone" class="h-3 w-3"></i>
-          <span>РљРѕРЅСЃСѓР»СЊС‚Р°С†РёСЏ 24/7</span>
+          <span>Консультация 24/7</span>
         </button>
       </div>
     </div>
@@ -88,10 +99,10 @@
     <!-- Hero & Search Section -->
     <section class="pt-10 pb-6 text-left" id="catalog">
       <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-slate-900 dark:text-white">
-        Р‘РѕР»СЊРЅРёС†С‹, РєР»РёРЅРёРєРё Рё СЂРµР°Р±РёР»РёС‚Р°С†РёРѕРЅРЅС‹Рµ С†РµРЅС‚СЂС‹
+        Больницы, клиники и реабилитационные центры
       </h1>
       <p class="mt-2 text-sm sm:text-base text-slate-500 dark:text-slate-400 max-w-2xl">
-        РџСЂСЏРјРѕРµ Р±СЂРѕРЅРёСЂРѕРІР°РЅРёРµ СЃС‚Р°С†РёРѕРЅР°СЂРѕРІ Рё Р·Р°РїРёСЃСЊ Рє РІСЂР°С‡Р°Рј РІ Р”СѓС€Р°РЅР±Рµ, РўР°С€РєРµРЅС‚Рµ Рё РЎС‚Р°РјР±СѓР»Рµ.
+        Прямое бронирование стационаров и запись к врачам в Душанбе, Ташкенте и Стамбуле.
       </p>
 
       <!-- Search & Filter Controls -->
@@ -99,7 +110,7 @@
         class="mt-6 flex flex-col sm:flex-row items-stretch gap-2.5 bg-white dark:bg-slate-900 p-2 rounded-xl border border-slate-200/90 dark:border-slate-800 shadow-xs transition-colors">
         <div class="relative flex-grow flex items-center">
           <i data-lucide="search" class="absolute left-3.5 h-4 w-4 text-slate-400"></i>
-          <input type="text" id="searchInput" placeholder="РџРѕРёСЃРє РїРѕ РЅР°Р·РІР°РЅРёСЋ, РѕС‚РґРµР»РµРЅРёСЋ РёР»Рё РІСЂР°С‡Сѓ..."
+          <input type="text" id="searchInput" placeholder="Поиск по названию, отделению или врачу..."
             class="w-full bg-transparent pl-10 pr-3 py-2 text-sm text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none">
         </div>
 
@@ -110,10 +121,10 @@
           <i data-lucide="map-pin" class="h-4 w-4 text-slate-400 shrink-0"></i>
           <select id="citySelect"
             class="bg-transparent py-2 text-xs font-medium text-slate-700 dark:text-slate-300 focus:outline-none cursor-pointer">
-            <option value="Р’СЃРµ РіРѕСЂРѕРґР°" class="bg-white dark:bg-slate-900">Р’СЃРµ РіРѕСЂРѕРґР°</option>
-            <option value="Р”СѓС€Р°РЅР±Рµ" class="bg-white dark:bg-slate-900">Р”СѓС€Р°РЅР±Рµ</option>
-            <option value="РўР°С€РєРµРЅС‚" class="bg-white dark:bg-slate-900">РўР°С€РєРµРЅС‚</option>
-            <option value="РЎС‚Р°РјР±СѓР»" class="bg-white dark:bg-slate-900">РЎС‚Р°РјР±СѓР»</option>
+            <option value="Все города" class="bg-white dark:bg-slate-900">Все города</option>
+            <option value="Душанбе" class="bg-white dark:bg-slate-900">Душанбе</option>
+            <option value="Ташкент" class="bg-white dark:bg-slate-900">Ташкент</option>
+            <option value="Стамбул" class="bg-white dark:bg-slate-900">Стамбул</option>
           </select>
         </div>
 
@@ -124,11 +135,11 @@
           <i data-lucide="dollar-sign" class="h-4 w-4 text-slate-400 shrink-0"></i>
           <select id="priceSelect"
             class="bg-transparent py-2 text-xs font-medium text-slate-700 dark:text-slate-300 focus:outline-none cursor-pointer">
-            <option value="10000" class="bg-white dark:bg-slate-900">Р›СЋР±Р°СЏ С†РµРЅР°</option>
-            <option value="500" class="bg-white dark:bg-slate-900">РґРѕ $500</option>
-            <option value="1000" class="bg-white dark:bg-slate-900">РґРѕ $1 000</option>
-            <option value="2000" class="bg-white dark:bg-slate-900">РґРѕ $2 000</option>
-            <option value="4000" class="bg-white dark:bg-slate-900">РґРѕ $4 000</option>
+            <option value="10000" class="bg-white dark:bg-slate-900">Любая цена</option>
+            <option value="500" class="bg-white dark:bg-slate-900">до $500</option>
+            <option value="1000" class="bg-white dark:bg-slate-900">до $1 000</option>
+            <option value="2000" class="bg-white dark:bg-slate-900">до $2 000</option>
+            <option value="4000" class="bg-white dark:bg-slate-900">до $4 000</option>
           </select>
         </div>
 
@@ -136,7 +147,7 @@
         <button id="geoBtn" onclick="requestGeolocation()"
           class="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-medium rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer whitespace-nowrap">
           <i data-lucide="navigation" class="h-3.5 w-3.5"></i>
-          <span id="geoText">РњРѕР№ РіРѕСЂРѕРґ</span>
+          <span id="geoText">Мой город</span>
         </button>
       </div>
 
@@ -148,13 +159,13 @@
 
         <div class="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
           <i data-lucide="arrow-up-down" class="h-3.5 w-3.5"></i>
-          <span>РЎРѕСЂС‚РёСЂРѕРІРєР°:</span>
+          <span>Сортировка:</span>
           <select id="sortSelect"
             class="bg-transparent text-slate-800 dark:text-slate-200 font-medium focus:outline-none cursor-pointer">
-            <option value="rating" class="bg-white dark:bg-slate-900">РџРѕ СЂРµР№С‚РёРЅРіСѓ</option>
-            <option value="price_asc" class="bg-white dark:bg-slate-900">РЎРЅР°С‡Р°Р»Р° РґРµС€РµРІР»Рµ</option>
-            <option value="price_desc" class="bg-white dark:bg-slate-900">РЎРЅР°С‡Р°Р»Р° РґРѕСЂРѕР¶Рµ</option>
-            <option value="distance" class="bg-white dark:bg-slate-900">РџРѕ СѓРґР°Р»РµРЅРЅРѕСЃС‚Рё</option>
+            <option value="rating" class="bg-white dark:bg-slate-900">По рейтингу</option>
+            <option value="price_asc" class="bg-white dark:bg-slate-900">Сначала дешевле</option>
+            <option value="price_desc" class="bg-white dark:bg-slate-900">Сначала дороже</option>
+            <option value="distance" class="bg-white dark:bg-slate-900">По удаленности</option>
           </select>
         </div>
       </div>
@@ -175,14 +186,14 @@
           <div class="flex items-center justify-between pb-2 px-1 text-xs">
             <div class="flex items-center gap-1.5 font-semibold text-slate-800 dark:text-slate-200">
               <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-              <span>РљР°СЂС‚Р° РѕС‚РґРµР»РµРЅРёР№</span>
+              <span>Карта отделений</span>
               <span class="text-[10px] font-bold text-sky-700 dark:text-sky-300 bg-sky-50 dark:bg-sky-950/60 border border-sky-200 dark:border-sky-800/80 px-1.5 py-0.5 rounded">Esri Satellite HD</span>
             </div>
             <!-- Layer Switcher -->
             <div class="flex items-center gap-1 bg-slate-100 dark:bg-slate-800 p-0.5 rounded-lg text-[11px] font-medium text-slate-500">
-              <button id="mapBtnSatellite" onclick="setMapLayer('satellite')" class="px-2 py-0.5 rounded-md text-slate-900 dark:text-white bg-white dark:bg-slate-700 shadow-xs transition cursor-pointer font-medium">РЎРїСѓС‚РЅРёРє HD</button>
-              <button id="mapBtnScheme" onclick="setMapLayer('scheme')" class="px-2 py-0.5 rounded-md hover:text-slate-900 dark:hover:text-white transition cursor-pointer">РЎС…РµРјР°</button>
-              <button id="mapBtnStandard" onclick="setMapLayer('standard')" class="px-2 py-0.5 rounded-md hover:text-slate-900 dark:hover:text-white transition cursor-pointer">Р“РѕСЂРѕРґ</button>
+              <button id="mapBtnSatellite" onclick="setMapLayer('satellite')" class="px-2 py-0.5 rounded-md text-slate-900 dark:text-white bg-white dark:bg-slate-700 shadow-xs transition cursor-pointer font-medium">Спутник HD</button>
+              <button id="mapBtnScheme" onclick="setMapLayer('scheme')" class="px-2 py-0.5 rounded-md hover:text-slate-900 dark:hover:text-white transition cursor-pointer">Схема</button>
+              <button id="mapBtnStandard" onclick="setMapLayer('standard')" class="px-2 py-0.5 rounded-md hover:text-slate-900 dark:hover:text-white transition cursor-pointer">Город</button>
             </div>
           </div>
           <div id="map" class="h-[480px] w-full rounded-lg overflow-hidden"></div>
@@ -194,21 +205,21 @@
     <section class="mt-16 pt-8 border-t border-slate-200 dark:border-slate-800" id="how-it-works">
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 text-xs text-slate-600 dark:text-slate-400">
         <div>
-          <h4 class="font-semibold text-slate-900 dark:text-white mb-1">100% РљРѕРЅС„РёРґРµРЅС†РёР°Р»СЊРЅРѕСЃС‚СЊ</h4>
+          <h4 class="font-semibold text-slate-900 dark:text-white mb-1">100% Конфиденциальность</h4>
           <p class="text-slate-500 dark:text-slate-400 leading-relaxed">
-            Р—Р°СЏРІРєР° РїРµСЂРµРґР°РµС‚СЃСЏ РЅРµРїРѕСЃСЂРµРґСЃС‚РІРµРЅРЅРѕ Р»РµС‡Р°С‰РµРјСѓ РєРѕРѕСЂРґРёРЅР°С‚РѕСЂСѓ РєР»РёРЅРёРєРё РІ Р·Р°С‰РёС‰РµРЅРЅРѕРј СЂРµР¶РёРјРµ.
+            Заявка передается непосредственно лечащему координатору клиники в защищенном режиме.
           </p>
         </div>
         <div>
-          <h4 class="font-semibold text-slate-900 dark:text-white mb-1">РђРєРєСЂРµРґРёС‚РѕРІР°РЅРЅС‹Рµ РІСЂР°С‡Рё</h4>
+          <h4 class="font-semibold text-slate-900 dark:text-white mb-1">Аккредитованные врачи</h4>
           <p class="text-slate-500 dark:text-slate-400 leading-relaxed">
-            Р’СЃРµ РјРµРґРёС†РёРЅСЃРєРёРµ СѓС‡СЂРµР¶РґРµРЅРёСЏ РїСЂРѕРІРµСЂРµРЅС‹ Рё СЂР°Р±РѕС‚Р°СЋС‚ РїРѕ РјРµР¶РґСѓРЅР°СЂРѕРґРЅС‹Рј СЃС‚Р°РЅРґР°СЂС‚Р°Рј JCI Рё ISO.
+            Все медицинские учреждения проверены и работают по международным стандартам JCI и ISO.
           </p>
         </div>
         <div>
-          <h4 class="font-semibold text-slate-900 dark:text-white mb-1">РџСЂСЏРјС‹Рµ С†РµРЅС‹ Р±РµР· РЅР°С†РµРЅРѕРє</h4>
+          <h4 class="font-semibold text-slate-900 dark:text-white mb-1">Прямые цены без наценок</h4>
           <p class="text-slate-500 dark:text-slate-400 leading-relaxed">
-            РћС„РёС†РёР°Р»СЊРЅС‹Рµ С‚Р°СЂРёС„С‹ Р±РѕР»СЊРЅРёС† СЃ РІРѕР·РјРѕР¶РЅРѕСЃС‚СЊСЋ Р±РµСЃРїР»Р°С‚РЅРѕР№ РєРѕРЅСЃСѓР»СЊС‚Р°С†РёРё Рё Р±СЂРѕРЅРёСЂРѕРІР°РЅРёСЏ.
+            Официальные тарифы больниц с возможностью бесплатной консультации и бронирования.
           </p>
         </div>
       </div>
@@ -233,7 +244,7 @@
       class="relative w-full max-w-lg bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xl overflow-hidden z-10 p-6">
       <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800 mb-4">
         <div>
-          <h3 class="text-base font-semibold text-slate-900 dark:text-white">Р‘СЂРѕРЅРёСЂРѕРІР°РЅРёРµ Рё РєРѕРЅСЃСѓР»СЊС‚Р°С†РёСЏ</h3>
+          <h3 class="text-base font-semibold text-slate-900 dark:text-white">Бронирование и консультация</h3>
           <p id="bookingClinicSubtitle" class="text-xs text-slate-500 dark:text-slate-400 mt-0.5"></p>
         </div>
         <button onclick="closeBookingModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
@@ -256,27 +267,27 @@
           </div>
 
           <div>
-            <label class="block font-medium text-slate-700 dark:text-slate-300 mb-1">Р¤РРћ РїР°С†РёРµРЅС‚Р° РёР»Рё РїСЂРµРґСЃС‚Р°РІРёС‚РµР»СЏ
+            <label class="block font-medium text-slate-700 dark:text-slate-300 mb-1">ФИО пациента или представителя
               *</label>
-            <input type="text" id="patientName" required placeholder="РРјСЏ"
+            <input type="text" id="patientName" required placeholder="Имя"
               class="w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-transparent px-3 py-2 text-slate-900 dark:text-white focus:outline-none focus:border-slate-900 dark:focus:border-white">
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
-              <label class="block font-medium text-slate-700 dark:text-slate-300 mb-1">РўРµР»РµС„РѕРЅ / WhatsApp *</label>
+              <label class="block font-medium text-slate-700 dark:text-slate-300 mb-1">Телефон / WhatsApp *</label>
               <input type="tel" id="patientPhone" required placeholder="+992 / +998 / +90..."
                 class="w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-transparent px-3 py-2 text-slate-900 dark:text-white focus:outline-none focus:border-slate-900 dark:focus:border-white">
             </div>
             <div>
-              <label class="block font-medium text-slate-700 dark:text-slate-300 mb-1">Р–РµР»Р°РµРјР°СЏ РґР°С‚Р° *</label>
+              <label class="block font-medium text-slate-700 dark:text-slate-300 mb-1">Желаемая дата *</label>
               <input type="date" id="desiredDate" required
                 class="w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-transparent px-3 py-2 text-slate-900 dark:text-white focus:outline-none focus:border-slate-900 dark:focus:border-white">
             </div>
           </div>
 
           <div>
-            <label class="block font-medium text-slate-700 dark:text-slate-300 mb-1">РџСЂРѕРіСЂР°РјРјР° Р»РµС‡РµРЅРёСЏ</label>
+            <label class="block font-medium text-slate-700 dark:text-slate-300 mb-1">Программа лечения</label>
             <select id="bookingServiceSelect"
               class="w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2 text-slate-900 dark:text-white focus:outline-none">
               <!-- Injected dynamically -->
@@ -284,25 +295,25 @@
           </div>
 
           <div>
-            <label class="block font-medium text-slate-700 dark:text-slate-300 mb-1">РљРѕРјРјРµРЅС‚Р°СЂРёР№</label>
-            <textarea id="bookingComment" rows="2" placeholder="РћРїРёС€РёС‚Рµ СЃРёРјРїС‚РѕРјС‹ РёР»Рё РїРѕР¶РµР»Р°РЅРёСЏ"
+            <label class="block font-medium text-slate-700 dark:text-slate-300 mb-1">Комментарий</label>
+            <textarea id="bookingComment" rows="2" placeholder="Опишите симптомы или пожелания"
               class="w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-transparent p-2 text-slate-900 dark:text-white focus:outline-none"></textarea>
           </div>
 
           <div class="pt-2 flex justify-end gap-2">
             <button type="button" onclick="closeBookingModal()"
-              class="px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer">РћС‚РјРµРЅР°</button>
+              class="px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer">Отмена</button>
             <button type="submit" id="bookingSubmitBtn"
               class="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-medium hover:bg-slate-800 transition cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
-              <span>РћС‚РїСЂР°РІРёС‚СЊ Р·Р°СЏРІРєСѓ</span>
+              <span>Отправить заявку</span>
             </button>
           </div>
 
           <p class="text-[10px] text-slate-400 dark:text-slate-500 text-center leading-normal pt-1">
-            РќР°Р¶РёРјР°СЏ РєРЅРѕРїРєСѓ В«РћС‚РїСЂР°РІРёС‚СЊ Р·Р°СЏРІРєСѓВ», РІС‹ РґР°РµС‚Рµ СЃРѕРіР»Р°СЃРёРµ РЅР° РѕР±СЂР°Р±РѕС‚РєСѓ РїРµСЂСЃРѕРЅР°Р»СЊРЅС‹С… РґР°РЅРЅС‹С… Рё СЃРѕРіР»Р°С€Р°РµС‚РµСЃСЊ СЃ 
-            <button type="button" onclick="openLegalModal('privacy')" class="underline text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white cursor-pointer">РџРѕР»РёС‚РёРєРѕР№ РєРѕРЅС„РёРґРµРЅС†РёР°Р»СЊРЅРѕСЃС‚Рё</button> 
-            Рё 
-            <button type="button" onclick="openLegalModal('terms')" class="underline text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white cursor-pointer">РџРѕР»СЊР·РѕРІР°С‚РµР»СЊСЃРєРёРј СЃРѕРіР»Р°С€РµРЅРёРµРј</button>.
+            Нажимая кнопку «Отправить заявку», вы даете согласие на обработку персональных данных и соглашаетесь с 
+            <button type="button" onclick="openLegalModal('privacy')" class="underline text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white cursor-pointer">Политикой конфиденциальности</button> 
+            и 
+            <button type="button" onclick="openLegalModal('terms')" class="underline text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white cursor-pointer">Пользовательским соглашением</button>.
           </p>
         </form>
       </div>
@@ -311,23 +322,155 @@
         <div class="h-10 w-10 text-emerald-600 mx-auto mb-2 flex items-center justify-center">
           <i data-lucide="check-circle" class="h-10 w-10"></i>
         </div>
-        <h4 class="text-base font-semibold text-slate-900 dark:text-white">Р—Р°СЏРІРєР° СѓСЃРїРµС€РЅРѕ РїСЂРёРЅСЏС‚Р°!</h4>
+        <h4 class="text-base font-semibold text-slate-900 dark:text-white">Заявка успешно принята!</h4>
         <div class="my-2">
           <span class="inline-flex items-center gap-1.5 text-xs text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800/60 px-3 py-1 rounded-full font-medium">
-            <i data-lucide="send" class="h-3.5 w-3.5"></i> РћС‚РїСЂР°РІР»РµРЅРѕ РґРµР¶СѓСЂРЅРѕРјСѓ РІСЂР°С‡Сѓ РІ Telegram
+            <i data-lucide="send" class="h-3.5 w-3.5"></i> Отправлено дежурному врачу в Telegram
           </span>
         </div>
-        <p class="mt-2 text-slate-600 dark:text-slate-300">РќРѕРјРµСЂ Р±СЂРѕРЅРёСЂРѕРІР°РЅРёСЏ: <strong id="successCode"
+        <p class="mt-2 text-slate-600 dark:text-slate-300">Номер бронирования: <strong id="successCode"
             class="font-mono text-slate-900 dark:text-white"></strong></p>
         <div class="mt-4 flex items-center justify-center gap-2">
           <a id="successTgLink" href="https://t.me/" target="_blank"
             class="hidden inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-sky-500 hover:bg-sky-600 text-white font-medium transition cursor-pointer">
             <i data-lucide="send" class="h-3.5 w-3.5"></i>
-            <span>РћС‚РєСЂС‹С‚СЊ РІ Telegram</span>
+            <span>Открыть в Telegram</span>
           </a>
           <button onclick="closeBookingModal()"
             class="px-4 py-2 rounded-lg bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-medium cursor-pointer transition hover:opacity-90">
-            Р—Р°РєСЂС‹С‚СЊ
+            Закрыть
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Partner / Clinic B2B Registration Modal -->
+  <div id="partnerModal" class="fixed inset-0 z-[9998] hidden overflow-y-auto p-4 sm:p-6 flex items-center justify-center">
+    <div class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs transition-opacity" onclick="closePartnerModal()"></div>
+    <div
+      class="relative w-full max-w-lg bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden p-6 z-10 transition-colors max-h-[90vh] overflow-y-auto">
+      
+      <!-- Modal Header -->
+      <div class="flex items-start justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
+        <div>
+          <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 mb-1.5">
+            <i data-lucide="building-2" class="h-3 w-3"></i>
+            <span>B2B Партнерство</span>
+          </div>
+          <h3 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white">Подключите вашу клинику к MedBooking</h3>
+          <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">
+            Бесплатное размещение в каталоге и поток первичных пациентов без комиссии на первые 3 месяца.
+          </p>
+        </div>
+        <button onclick="closePartnerModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition shrink-0 ml-2">
+          <i data-lucide="x" class="h-4 w-4"></i>
+        </button>
+      </div>
+
+      <!-- Partner Form -->
+      <div id="partnerFormContainer" class="mt-4">
+        <form id="partnerForm" onsubmit="handlePartnerSubmit(event)" class="space-y-3.5">
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              Название клиники / рехаба <span class="text-rose-500">*</span>
+            </label>
+            <input id="partnerClinicName" type="text" required placeholder="Например: Клиника Ибн Сино"
+              class="w-full text-xs px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-hidden focus:ring-2 focus:ring-emerald-500 transition">
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                Город <span class="text-rose-500">*</span>
+              </label>
+              <input id="partnerCity" type="text" required placeholder="Например: Душанбе"
+                class="w-full text-xs px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-hidden focus:ring-2 focus:ring-emerald-500 transition">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                Телефон / WhatsApp <span class="text-rose-500">*</span>
+              </label>
+              <input id="partnerPhone" type="tel" required placeholder="+992 90 000 0000"
+                class="w-full text-xs px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-hidden focus:ring-2 focus:ring-emerald-500 transition">
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              Контактное лицо (ФИО и должность) <span class="text-rose-500">*</span>
+            </label>
+            <input id="partnerContactPerson" type="text" required placeholder="Например: Сафаров Исмоил, Главный врач / Директор"
+              class="w-full text-xs px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-hidden focus:ring-2 focus:ring-emerald-500 transition">
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+              Основные направления (выберите подходящие):
+            </label>
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs">
+              <label class="flex items-center gap-2 p-2 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer">
+                <input type="checkbox" name="partnerSpecialty" value="Наркология" class="rounded text-emerald-600 focus:ring-emerald-500">
+                <span class="text-slate-700 dark:text-slate-300">Наркология</span>
+              </label>
+              <label class="flex items-center gap-2 p-2 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer">
+                <input type="checkbox" name="partnerSpecialty" value="Психотерапия" class="rounded text-emerald-600 focus:ring-emerald-500">
+                <span class="text-slate-700 dark:text-slate-300">Психотерапия</span>
+              </label>
+              <label class="flex items-center gap-2 p-2 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer">
+                <input type="checkbox" name="partnerSpecialty" value="Реабилитация" class="rounded text-emerald-600 focus:ring-emerald-500">
+                <span class="text-slate-700 dark:text-slate-300">Реабилитация</span>
+              </label>
+              <label class="flex items-center gap-2 p-2 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer">
+                <input type="checkbox" name="partnerSpecialty" value="Хирургия" class="rounded text-emerald-600 focus:ring-emerald-500">
+                <span class="text-slate-700 dark:text-slate-300">Хирургия</span>
+              </label>
+              <label class="flex items-center gap-2 p-2 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer col-span-2 sm:col-span-1">
+                <input type="checkbox" name="partnerSpecialty" value="Диагностика" class="rounded text-emerald-600 focus:ring-emerald-500">
+                <span class="text-slate-700 dark:text-slate-300">Диагностика</span>
+              </label>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              Дополнительно (комментарий, сайт или лицензия)
+            </label>
+            <textarea id="partnerComment" rows="2" placeholder="Особенности клиники, коечный фонд, сайт..."
+              class="w-full text-xs px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-hidden focus:ring-2 focus:ring-emerald-500 transition"></textarea>
+          </div>
+
+          <div id="partnerErrorAlert" class="hidden p-3 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900/60 text-xs text-rose-700 dark:text-rose-300">
+            <div id="partnerErrorText"></div>
+          </div>
+
+          <div class="pt-2 flex items-center justify-end gap-2.5">
+            <button type="button" onclick="closePartnerModal()"
+              class="px-4 py-2.5 rounded-xl text-xs font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer">
+              Отмена
+            </button>
+            <button id="partnerSubmitBtn" type="submit"
+              class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold transition cursor-pointer shadow-md shadow-emerald-600/20">
+              <i data-lucide="send" class="h-3.5 w-3.5"></i>
+              <span>Отправить заявку на подключение</span>
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Success View -->
+      <div id="partnerSuccessContainer" class="hidden text-center py-6 text-xs">
+        <div class="h-12 w-12 text-emerald-600 mx-auto mb-3 flex items-center justify-center rounded-full bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800">
+          <i data-lucide="check-circle" class="h-6 w-6"></i>
+        </div>
+        <h4 class="text-base font-bold text-slate-900 dark:text-white">Заявка на партнерство принята!</h4>
+        <p class="mt-2 text-slate-600 dark:text-slate-300 leading-relaxed max-w-sm mx-auto">
+          Благодарим за интерес к MedBooking. Наш B2B-менеджер по работе с медицинскими центрами свяжется с вами по указанному телефону/WhatsApp в течение 15 минут для оформления размещения в каталоге.
+        </p>
+        <div class="mt-5 flex items-center justify-center gap-2">
+          <button onclick="closePartnerModal()"
+            class="px-5 py-2.5 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-semibold cursor-pointer transition hover:opacity-90">
+            Закрыть
           </button>
         </div>
       </div>
@@ -346,7 +489,7 @@
           <div class="p-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200">
             <i data-lucide="shield-check" class="h-4 w-4"></i>
           </div>
-          <h3 id="legalModalTitle" class="text-base font-bold text-slate-900 dark:text-white">Р®СЂРёРґРёС‡РµСЃРєР°СЏ РёРЅС„РѕСЂРјР°С†РёСЏ</h3>
+          <h3 id="legalModalTitle" class="text-base font-bold text-slate-900 dark:text-white">Юридическая информация</h3>
         </div>
         <button onclick="closeLegalModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition">
           <i data-lucide="x" class="h-4 w-4"></i>
@@ -356,11 +499,11 @@
       <!-- Navigation Tabs -->
       <div class="px-6 pt-3 pb-1 border-b border-slate-100 dark:border-slate-800 flex items-center gap-2 text-xs font-medium shrink-0 bg-slate-50/50 dark:bg-slate-900/50">
         <button id="tabPrivacyBtn" onclick="switchLegalTab('privacy')"
-          class="px-3 py-1.5 rounded-lg text-slate-900 dark:text-white bg-white dark:bg-slate-800 shadow-xs border border-slate-200/80 dark:border-slate-700">РџРѕР»РёС‚РёРєР° РєРѕРЅС„РёРґРµРЅС†РёР°Р»СЊРЅРѕСЃС‚Рё</button>
+          class="px-3 py-1.5 rounded-lg text-slate-900 dark:text-white bg-white dark:bg-slate-800 shadow-xs border border-slate-200/80 dark:border-slate-700">Политика конфиденциальности</button>
         <button id="tabTermsBtn" onclick="switchLegalTab('terms')"
-          class="px-3 py-1.5 rounded-lg text-slate-500 hover:text-slate-900 dark:hover:text-white transition">РџРѕР»СЊР·РѕРІР°С‚РµР»СЊСЃРєРѕРµ СЃРѕРіР»Р°С€РµРЅРёРµ</button>
+          class="px-3 py-1.5 rounded-lg text-slate-500 hover:text-slate-900 dark:hover:text-white transition">Пользовательское соглашение</button>
         <button id="tabDisclaimerBtn" onclick="switchLegalTab('disclaimer')"
-          class="px-3 py-1.5 rounded-lg text-slate-500 hover:text-slate-900 dark:hover:text-white transition">Р”РёСЃРєР»РµР№РјРµСЂ</button>
+          class="px-3 py-1.5 rounded-lg text-slate-500 hover:text-slate-900 dark:hover:text-white transition">Дисклеймер</button>
       </div>
 
       <!-- Scrollable Body Content -->
@@ -371,7 +514,7 @@
       <!-- Modal Footer -->
       <div class="px-6 py-3 border-t border-slate-100 dark:border-slate-800 flex justify-end shrink-0 bg-slate-50/50 dark:bg-slate-900/50">
         <button onclick="closeLegalModal()" class="px-4 py-2 rounded-lg bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-medium text-xs hover:bg-slate-800 transition cursor-pointer">
-          РџРѕРЅСЏС‚РЅРѕ
+          Понятно
         </button>
       </div>
     </div>
@@ -387,14 +530,14 @@
             <i data-lucide="heart-pulse" class="h-3 w-3"></i>
           </div>
           <span class="font-bold text-slate-900 dark:text-white">MedBooking</span>
-          <span>В·</span>
-          <span>РњРµР¶РґСѓРЅР°СЂРѕРґРЅС‹Р№ РјРµРґРёС†РёРЅСЃРєРёР№ Р°РіСЂРµРіР°С‚РѕСЂ</span>
+          <span>·</span>
+          <span>Международный медицинский агрегатор</span>
         </div>
         <div class="flex items-center gap-4 text-slate-600 dark:text-slate-400 font-medium">
           <a href="tel:+992446008822" class="hover:text-slate-900 dark:hover:text-white transition-colors">+992 44 600 8822 (TJ)</a>
-          <span>В·</span>
+          <span>·</span>
           <a href="tel:+998712004040" class="hover:text-slate-900 dark:hover:text-white transition-colors">+998 71 200 4040 (UZ)</a>
-          <span>В·</span>
+          <span>·</span>
           <a href="tel:+902129883344" class="hover:text-slate-900 dark:hover:text-white transition-colors">+90 212 988 3344 (TR)</a>
         </div>
       </div>
@@ -404,21 +547,21 @@
         <div class="flex items-start gap-3 bg-slate-50 dark:bg-slate-950/60 p-4 rounded-xl border border-slate-200/80 dark:border-slate-800/80 text-[11px] leading-relaxed text-slate-500 dark:text-slate-400">
           <i data-lucide="shield-alert" class="h-4 w-4 text-amber-500 shrink-0 mt-0.5"></i>
           <p>
-            <strong class="text-slate-700 dark:text-slate-200">Р”РёСЃРєР»РµР№РјРµСЂ:</strong> РџР»Р°С‚С„РѕСЂРјР° MedBooking СЏРІР»СЏРµС‚СЃСЏ РёРЅС„РѕСЂРјР°С†РёРѕРЅРЅС‹Рј Р°РіСЂРµРіР°С‚РѕСЂРѕРј. РЎРµСЂРІРёСЃ РЅРµ РѕРєР°Р·С‹РІР°РµС‚ РјРµРґРёС†РёРЅСЃРєРёРµ СѓСЃР»СѓРіРё РЅР°РїСЂСЏРјСѓСЋ, РЅРµ СЃС‚Р°РІРёС‚ РґРёР°РіРЅРѕР·С‹ Рё РЅРµ РЅР°Р·РЅР°С‡Р°РµС‚ Р»РµС‡РµРЅРёРµ. Р’СЃРµ РјРµРґРёС†РёРЅСЃРєРёРµ СѓСЃР»СѓРіРё РїСЂРµРґРѕСЃС‚Р°РІР»СЏСЋС‚СЃСЏ РЅРµРїРѕСЃСЂРµРґСЃС‚РІРµРЅРЅРѕ Р»РёС†РµРЅР·РёСЂРѕРІР°РЅРЅС‹РјРё РїР°СЂС‚РЅРµСЂСЃРєРёРјРё РєР»РёРЅРёРєР°РјРё Рё СЃРїРµС†РёР°Р»РёСЃС‚Р°РјРё. РџРµСЂРµРґ РїСЂРёРјРµРЅРµРЅРёРµРј Р»СЋР±С‹С… РјРµРґРёС†РёРЅСЃРєРёС… РїСЂРѕРіСЂР°РјРј РїСЂРѕРєРѕРЅСЃСѓР»СЊС‚РёСЂСѓР№С‚РµСЃСЊ СЃ Р»РµС‡Р°С‰РёРј РІСЂР°С‡РѕРј.
+            <strong class="text-slate-700 dark:text-slate-200">Дисклеймер:</strong> Платформа MedBooking является информационным агрегатором. Сервис не оказывает медицинские услуги напрямую, не ставит диагнозы и не назначает лечение. Все медицинские услуги предоставляются непосредственно лицензированными партнерскими клиниками и специалистами. Перед применением любых медицинских программ проконсультируйтесь с лечащим врачом.
           </p>
         </div>
 
         <!-- Legal Navigation Links & Copyright -->
         <div class="mt-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-slate-400 dark:text-slate-500">
           <div class="flex flex-wrap items-center gap-3">
-            <button type="button" onclick="openLegalModal('privacy')" class="hover:underline hover:text-slate-700 dark:hover:text-slate-300 transition cursor-pointer">РџРѕР»РёС‚РёРєР° РєРѕРЅС„РёРґРµРЅС†РёР°Р»СЊРЅРѕСЃС‚Рё</button>
-            <span>В·</span>
-            <button type="button" onclick="openLegalModal('terms')" class="hover:underline hover:text-slate-700 dark:hover:text-slate-300 transition cursor-pointer">РџРѕР»СЊР·РѕРІР°С‚РµР»СЊСЃРєРѕРµ СЃРѕРіР»Р°С€РµРЅРёРµ</button>
-            <span>В·</span>
-            <button type="button" onclick="openLegalModal('disclaimer')" class="hover:underline hover:text-slate-700 dark:hover:text-slate-300 transition cursor-pointer">РњРµРґРёС†РёРЅСЃРєРёР№ РѕС‚РєР°Р· РѕС‚ РѕС‚РІРµС‚СЃС‚РІРµРЅРЅРѕСЃС‚Рё</button>
+            <button type="button" onclick="openLegalModal('privacy')" class="hover:underline hover:text-slate-700 dark:hover:text-slate-300 transition cursor-pointer">Политика конфиденциальности</button>
+            <span>·</span>
+            <button type="button" onclick="openLegalModal('terms')" class="hover:underline hover:text-slate-700 dark:hover:text-slate-300 transition cursor-pointer">Пользовательское соглашение</button>
+            <span>·</span>
+            <button type="button" onclick="openLegalModal('disclaimer')" class="hover:underline hover:text-slate-700 dark:hover:text-slate-300 transition cursor-pointer">Медицинский отказ от ответственности</button>
           </div>
           <div>
-            В© 2026 MedBooking International. Р’СЃРµ РїСЂР°РІР° Р·Р°С‰РёС‰РµРЅС‹.
+            © 2026 MedBooking International. Все права защищены.
           </div>
         </div>
       </div>

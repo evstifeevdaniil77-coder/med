@@ -5,60 +5,65 @@
 
 const CLINICS = [
   {
-    id: 'dushanbe-istiklol-hospital',
-    name: 'Многопрофильный Клинический Комплекс "Истиклол"',
-    description: 'Крупнейший государственный и международный медицинский центр Таджикистана на 650 стационарных мест. Специализируется на плановой и экстренной хирургии, кардиологии, неврологии, травматологии и высокотехнологичной МРТ/КТ диагностике 24/7.',
-    address: 'ул. Низами Гянджеви, 18',
+    id: 'dushanbe-narcology-gulyamov',
+    name: 'Республиканский клинический центр наркологии им. М.Г. Гулямова',
+    description: 'Ведущее государственное специализированное учреждение Таджикистана. Полный комплекс наркологической помощи: купирование абстинентного синдрома, медикаментозное лечение, психосоциальная реабилитация и круглосуточный стационар.',
+    address: 'ул. Маяковского, 47',
     city: 'Душанбе',
     country: 'Таджикистан',
-    lat: 38.5524,
-    lng: 68.7512,
-    rating: 4.86,
-    reviewCount: 215,
+    lat: 38.5830,
+    lng: 68.7510,
+    rating: 4.8,
+    reviewCount: 168,
+    badge: 'Проверено платформой',
+    tags: ['Наркология', 'Алкогольная зависимость', 'Психосоциальная реабилитация', 'Стационар'],
     images: [
       'https://images.unsplash.com/photo-1586773860418-d37222d8fce3?auto=format&fit=crop&w=1200&q=80',
       'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=1000&q=80',
       'https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&w=1000&q=80'
     ],
-    category: 'Больница',
-    phone: '+992 37 234 1100',
-    email: 'info@istiklol-med.tj',
-    minPrice: 350,
+    category: 'Рехаб',
+    phone: '+992 37 236 6522',
+    email: 'info@narcology.tj',
+    minPrice: 420,
     doctors: [
-      { fullName: 'Др. Раджабов Сафар Икромович', specialty: 'Ведущий хирург, зав. оперблоком', experienceYears: 24, photo: 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&w=600&q=80' },
-      { fullName: 'Др. Самадова Гулчехра Анваровна', specialty: 'Кардиолог, функциональный диагност', experienceYears: 17, photo: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=600&q=80' }
+      { fullName: 'Др. Рахимов Джамшед Каримович', specialty: 'Врач-психиатр-нарколог высшей категории', experienceYears: 22, photo: 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&w=600&q=80' },
+      { fullName: 'Др. Шарипова Нигина Акрамовна', specialty: 'Клинический психолог, психотерапевт', experienceYears: 15, photo: 'https://images.unsplash.com/photo-1594824813589-b0c4424613bb?auto=format&fit=crop&w=600&q=80' }
     ],
     services: [
-      { id: 's1', title: 'Комплексный терапевтический стационар (7 дней)', description: 'Палата интенсивного наблюдения, инфузионная терапия, суточный мониторинг.', price: 520, durationDays: 7 },
-      { id: 's2', title: 'Кардиологический диагностический Check-up (3 дня)', description: 'Коронарография, ЭКГ под нагрузкой, биохимический профиль.', price: 350, durationDays: 3 }
+      { id: 's1', title: 'Детоксикация и купирование абстиненции (7 дней)', description: 'Медикаментозное очищение организма, суточный мониторинг, палата наблюдения.', price: 420, durationDays: 7 },
+      { id: 's2', title: 'Курс психосоциальной реабилитации (28 дней)', description: 'Био-психо-социальная программа, групповая и личная психотерапия.', price: 1450, durationDays: 28 }
     ]
   },
   {
-    id: 'dushanbe-oasis-rehab',
-    name: 'Центр Реабилитации и Восстановления "Оазис"',
-    description: 'Ведущий медицинский реабилитационный центр Таджикистана, специализирующийся на аддиктологии, детоксикации и психотерапевтической поддержке. Закрытая парковая территория с круглосуточным медицинским наблюдением.',
-    address: 'ул. Исмоили Сомони, 48/2',
+    id: 'dushanbe-shifo-ibnsino',
+    name: 'Международная многопрофильная клиника "Шифо" (Клиника Ибн Сино)',
+    description: 'Ведущий современный частный медицинский центр Таджикистана европейского уровня. Специализируется на экспертной МРТ/КТ диагностике, кардиологии, неврологии, хирургии и реабилитации после сложных операций.',
+    address: 'ул. Ф. Ниязи, 34',
     city: 'Душанбе',
     country: 'Таджикистан',
-    lat: 38.5737,
-    lng: 68.7844,
+    lat: 38.5714,
+    lng: 68.7845,
     rating: 4.9,
-    reviewCount: 64,
+    reviewCount: 295,
+    badge: 'Популярное',
+    tags: ['Реабилитация после операций', 'Кардиология', 'Неврология', 'Диагностика'],
     images: [
-      'https://images.unsplash.com/photo-1586773860418-d37222d8fce3?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=1000&q=80'
+      'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1586773860418-d37222d8fce3?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&w=1000&q=80'
     ],
-    category: 'Рехаб',
-    phone: '+992 44 600 8822',
-    email: 'info@oasis-rehab.tj',
-    minPrice: 950,
+    category: 'Больница',
+    phone: '+992 44 600 4444',
+    email: 'info@ibnsino.tj',
+    minPrice: 350,
     doctors: [
-      { fullName: 'Др. Каримов Фарход Саидович', specialty: 'Главный врач, нарколог-психотерапевт', experienceYears: 18, photo: 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&w=600&q=80' },
-      { fullName: 'Др. Назарова Зарина Баходировна', specialty: 'Клинический психолог, КПТ-терапевт', experienceYears: 12, photo: 'https://images.unsplash.com/photo-1594824813589-b0c4424613bb?auto=format&fit=crop&w=600&q=80' }
+      { fullName: 'Проф. д-р Ходжаев Сухроб Давлатович', specialty: 'Ведущий кардиолог-реабилитолог', experienceYears: 26, photo: 'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&w=600&q=80' },
+      { fullName: 'Др. Самадова Гулчехра Анваровна', specialty: 'Врач-невролог, функциональный диагност', experienceYears: 18, photo: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=600&q=80' }
     ],
     services: [
-      { id: 's3', title: 'Интенсивный стационарный курс (28 дней)', description: 'Био-психо-социальная реабилитация в комфортабельной палате с питанием.', price: 2400, durationDays: 28 },
-      { id: 's4', title: 'Программа детоксикации и стабилизации (7 дней)', description: 'Медикаментозное очищение организма, купирование абстиненции.', price: 950, durationDays: 7 }
+      { id: 's3', title: 'Кардиологический и диагностический Check-up (3 дня)', description: 'МРТ, УЗИ экспертного класса, ЭКГ с нагрузкой, лабораторный профиль.', price: 350, durationDays: 3 },
+      { id: 's4', title: 'Комплексный курс реабилитации после операций (14 дней)', description: 'Аппаратная физиотерапия, индивидуальная реабилитация, стационар.', price: 890, durationDays: 14 }
     ]
   },
   {
@@ -495,6 +500,7 @@ function renderClinics() {
           <div class="sm:w-44 h-36 rounded-lg overflow-hidden bg-slate-100 dark:bg-slate-800 shrink-0 relative">
             <img src="${c.images[0]}" alt="${c.name}" class="h-full w-full object-cover" loading="lazy">
             <span class="absolute top-2 left-2 bg-black/60 text-white text-[10px] font-medium px-1.5 py-0.5 rounded">${c.category}</span>
+            ${c.badge ? `<span class="absolute top-2 right-2 ${c.badge.includes('Проверено') ? 'bg-emerald-600' : 'bg-amber-500'} text-white text-[10px] font-semibold px-2 py-0.5 rounded shadow-sm">${c.badge}</span>` : ''}
           </div>
 
           <div class="flex-grow flex flex-col justify-between">
@@ -511,6 +517,11 @@ function renderClinics() {
               </h3>
               <p class="mt-1 text-xs text-slate-500 dark:text-slate-400 line-clamp-1">${c.address}</p>
               <p class="mt-1.5 text-xs text-slate-600 dark:text-slate-300 line-clamp-2 leading-relaxed">${c.description}</p>
+              ${c.tags && c.tags.length ? `
+                <div class="mt-2 flex flex-wrap gap-1">
+                  ${c.tags.map(t => `<span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200/60 dark:border-slate-700/60">${t}</span>`).join('')}
+                </div>
+              ` : ''}
             </div>
 
             <div class="mt-3 pt-2.5 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
@@ -547,7 +558,10 @@ function openClinicDetail(id) {
   content.innerHTML = `
     <div class="flex items-start justify-between pb-3 border-b border-slate-100 dark:border-slate-800 mb-4">
       <div>
-        <div class="text-xs text-slate-500 mb-1">${clinic.category} · ${clinic.city}, ${clinic.country}</div>
+        <div class="flex items-center gap-2 mb-1">
+          <span class="text-xs text-slate-500">${clinic.category} · ${clinic.city}, ${clinic.country}</span>
+          ${clinic.badge ? `<span class="text-[10px] font-semibold px-2 py-0.5 rounded ${clinic.badge.includes('Проверено') ? 'bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300' : 'bg-amber-100 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300'}">${clinic.badge}</span>` : ''}
+        </div>
         <h2 class="text-xl font-bold text-slate-900 dark:text-white">${clinic.name}</h2>
         <p class="text-xs text-slate-500">${clinic.address}</p>
       </div>
@@ -895,6 +909,160 @@ async function sendToTelegramDirectly(data, bookingId) {
   }
 }
 
+// ==========================================
+// B2B ПАРТНЕРСТВО (ДЛЯ КЛИНИК / ПОДКЛЮЧЕНИЕ)
+// ==========================================
+
+function openPartnerModal() {
+  const modal = document.getElementById('partnerModal');
+  if (!modal) return;
+
+  const errorAlert = document.getElementById('partnerErrorAlert');
+  if (errorAlert) errorAlert.classList.add('hidden');
+
+  const submitBtn = document.getElementById('partnerSubmitBtn');
+  if (submitBtn) {
+    submitBtn.disabled = false;
+    submitBtn.innerHTML = '<i data-lucide="send" class="h-3.5 w-3.5"></i><span>Отправить заявку на подключение</span>';
+  }
+
+  const formContainer = document.getElementById('partnerFormContainer');
+  const successContainer = document.getElementById('partnerSuccessContainer');
+  if (formContainer) formContainer.classList.remove('hidden');
+  if (successContainer) successContainer.classList.add('hidden');
+
+  modal.classList.remove('hidden');
+  if (window.lucide) lucide.createIcons();
+}
+
+function closePartnerModal() {
+  const modal = document.getElementById('partnerModal');
+  if (modal) modal.classList.add('hidden');
+}
+
+async function handlePartnerSubmit(e) {
+  e.preventDefault();
+
+  const clinicNameInput = document.getElementById('partnerClinicName');
+  const cityInput = document.getElementById('partnerCity');
+  const contactPersonInput = document.getElementById('partnerContactPerson');
+  const phoneInput = document.getElementById('partnerPhone');
+  const commentInput = document.getElementById('partnerComment');
+  const errorAlert = document.getElementById('partnerErrorAlert');
+  const errorText = document.getElementById('partnerErrorText');
+  const submitBtn = document.getElementById('partnerSubmitBtn');
+
+  // Чекбоксы направлений
+  const selectedCheckboxes = Array.from(document.querySelectorAll('input[name="partnerSpecialty"]:checked'))
+    .map(cb => cb.value);
+
+  const clinicName = clinicNameInput ? clinicNameInput.value.trim() : '';
+  const city = cityInput ? cityInput.value.trim() : '';
+  const contactPerson = contactPersonInput ? contactPersonInput.value.trim() : '';
+  const phone = phoneInput ? phoneInput.value.trim() : '';
+  const comment = commentInput ? commentInput.value.trim() : '';
+
+  if (errorAlert) errorAlert.classList.add('hidden');
+
+  if (!clinicName || !city || !contactPerson || !phone) {
+    if (errorText) errorText.innerText = 'Пожалуйста, заполните все обязательные поля (*)';
+    if (errorAlert) errorAlert.classList.remove('hidden');
+    return;
+  }
+
+  if (submitBtn) {
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<span class="inline-block animate-spin mr-1.5">⏳</span><span>Отправка заявки...</span>';
+  }
+
+  try {
+    const res = await sendPartnerToTelegramDirectly({
+      clinicName,
+      city,
+      contactPerson,
+      phone,
+      specialties: selectedCheckboxes,
+      comment
+    });
+
+    // Показываем экран успеха
+    const formContainer = document.getElementById('partnerFormContainer');
+    const successContainer = document.getElementById('partnerSuccessContainer');
+    if (formContainer) formContainer.classList.add('hidden');
+    if (successContainer) successContainer.classList.remove('hidden');
+
+    showToast('Заявка на партнерство успешно передана!', 'success');
+    const form = document.getElementById('partnerForm');
+    if (form) form.reset();
+    if (window.lucide) lucide.createIcons();
+
+  } catch (err) {
+    console.error('Ошибка отправки партнерской заявки:', err);
+    if (errorText) errorText.innerText = 'Не удалось отправить заявку. Попробуйте еще раз или свяжитесь с нами напрямую.';
+    if (errorAlert) errorAlert.classList.remove('hidden');
+    showToast('Ошибка при отправке заявки', 'error');
+  } finally {
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = '<i data-lucide="send" class="h-3.5 w-3.5"></i><span>Отправить заявку на подключение</span>';
+      if (window.lucide) lucide.createIcons();
+    }
+  }
+}
+
+async function sendPartnerToTelegramDirectly(data) {
+  const token = '8897502454:AAGHq6RNyGk9CZRXmhZVDlWWtrGqUiswfog';
+  const chatId = '5246841489';
+  const now = new Date().toLocaleString('ru-RU', { timeZone: 'Asia/Tashkent' });
+  const waPhone = data.phone.replace(/\D/g, '');
+  const waLink = waPhone ? `https://wa.me/${waPhone}` : '';
+
+  const specs = data.specialties && data.specialties.length > 0 
+    ? data.specialties.join(', ') 
+    : 'Не указаны';
+
+  const messageHtml = [
+    `💼 <b>НОВЫЙ ПАРТНЕР (B2B заявка)!</b>`,
+    `━━━━━━━━━━━━━━━━━━━━━━━━━`,
+    `🏥 <b>Клиника:</b> ${data.clinicName}`,
+    `📍 <b>Город:</b> ${data.city}`,
+    `👤 <b>Контакт:</b> ${data.contactPerson}`,
+    `📞 <b>Телефон:</b> <a href="tel:${data.phone}">${data.phone}</a>`,
+    waLink ? `💬 <b>WhatsApp:</b> <a href="${waLink}">Написать в WhatsApp</a>` : '',
+    `🩺 <b>Направления:</b> ${specs}`,
+    data.comment ? `📝 <b>Примечание:</b> ${data.comment}` : '',
+    `━━━━━━━━━━━━━━━━━━━━━━━━━`,
+    `🕒 <i>Получено: ${now} (UTC+5)</i>`
+  ].filter(Boolean).join('\n');
+
+  const keyboard = [];
+  if (waLink) {
+    keyboard.push([{ text: '💬 Связаться в WhatsApp', url: waLink }]);
+  }
+  keyboard.push([{ text: '🌐 Открыть сайт', url: 'https://evstifeevdaniil77-coder.github.io/med/' }]);
+
+  const res = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      chat_id: chatId,
+      text: messageHtml,
+      parse_mode: 'HTML',
+      disable_web_page_preview: true,
+      reply_markup: {
+        inline_keyboard: keyboard
+      }
+    })
+  });
+
+  return await res.json();
+}
+
+// Экспорт функций в глобальную область
+window.openPartnerModal = openPartnerModal;
+window.closePartnerModal = closePartnerModal;
+window.handlePartnerSubmit = handlePartnerSubmit;
+
 // Event Listeners for Filters
 document.getElementById('searchInput').addEventListener('input', e => {
   searchQuery = e.target.value;
@@ -1097,6 +1265,7 @@ document.addEventListener('keydown', e => {
     closeLegalModal();
     closeBookingModal();
     closeDetailModal();
+    closePartnerModal();
   }
 });
 

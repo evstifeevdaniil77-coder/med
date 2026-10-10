@@ -5,109 +5,114 @@
 
 export const CLINICS_DATA = [
   {
-    id: 'dushanbe-istiklol-hospital',
-    name: 'Многопрофильный Клинический Комплекс "Истиклол"',
-    description: 'Крупнейший государственный и международный медицинский центр Таджикистана на 650 стационарных мест. Специализируется на плановой и экстренной хирургии, кардиологии, неврологии, травматологии и высокотехнологичной МРТ/КТ диагностике 24/7.',
-    address: 'ул. Низами Гянджеви, 18',
+    id: 'dushanbe-narcology-gulyamov',
+    name: 'Республиканский клинический центр наркологии им. М.Г. Гулямова',
+    description: 'Ведущее государственное специализированное учреждение Таджикистана. Полный комплекс наркологической помощи: купирование абстинентного синдрома, медикаментозное лечение, психосоциальная реабилитация и круглосуточный стационар.',
+    address: 'ул. Маяковского, 47',
     city: 'Душанбе',
     country: 'Таджикистан',
-    lat: 38.5524,
-    lng: 68.7512,
-    rating: 4.86,
-    reviewCount: 215,
+    lat: 38.5830,
+    lng: 68.7510,
+    rating: 4.80,
+    reviewCount: 168,
+    badge: 'Проверено платформой',
+    tags: ['Наркология', 'Алкогольная зависимость', 'Психосоциальная реабилитация', 'Стационар'],
     images: [
       'https://images.unsplash.com/photo-1586773860418-d37222d8fce3?auto=format&fit=crop&w=1200&q=80',
       'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=1000&q=80',
       'https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&w=1000&q=80'
     ],
-    category: 'Больница',
-    phone: '+992 37 234 1100',
-    email: 'info@istiklol-med.tj',
-    website: 'https://istiklol-med.tj',
-    minPrice: 350,
+    category: 'Рехаб',
+    phone: '+992 37 236 6522',
+    email: 'info@narcology.tj',
+    website: 'https://narcology.tj',
+    minPrice: 420,
     doctors: [
       {
         id: 'doc-1',
-        fullName: 'Др. Раджабов Сафар Икромович',
-        specialty: 'Ведущий хирург, зав. оперблоком',
-        experienceYears: 24,
+        fullName: 'Др. Рахимов Джамшед Каримович',
+        specialty: 'Врач-психиатр-нарколог высшей категории',
+        experienceYears: 22,
         photo: 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&w=600&q=80'
       },
       {
         id: 'doc-2',
-        fullName: 'Др. Самадова Гулчехра Анваровна',
-        specialty: 'Кардиолог, функциональный диагност',
-        experienceYears: 17,
-        photo: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=600&q=80'
-      }
-    ],
-    services: [
-      {
-        id: 's1',
-        title: 'Комплексный терапевтический стационар (7 дней)',
-        description: 'Палата интенсивного наблюдения, инфузионная терапия, суточный мониторинг.',
-        price: 520,
-        durationDays: 7
-      },
-      {
-        id: 's2',
-        title: 'Кардиологический диагностический Check-up (3 дня)',
-        description: 'Коронарография, ЭКГ под нагрузкой, биохимический профиль.',
-        price: 350,
-        durationDays: 3
-      }
-    ]
-  },
-  {
-    id: 'dushanbe-oasis-rehab',
-    name: 'Центр Реабилитации и Восстановления "Оазис"',
-    description: 'Ведущий медицинский реабилитационный центр Таджикистана, специализирующийся на аддиктологии, детоксикации и психотерапевтической поддержке. Закрытая парковая территория с круглосуточным медицинским наблюдением.',
-    address: 'ул. Исмоили Сомони, 48/2',
-    city: 'Душанбе',
-    country: 'Таджикистан',
-    lat: 38.5737,
-    lng: 68.7844,
-    rating: 4.90,
-    reviewCount: 64,
-    images: [
-      'https://images.unsplash.com/photo-1586773860418-d37222d8fce3?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=1000&q=80'
-    ],
-    category: 'Рехаб',
-    phone: '+992 44 600 8822',
-    email: 'info@oasis-rehab.tj',
-    website: 'https://oasis-rehab.tj',
-    minPrice: 950,
-    doctors: [
-      {
-        id: 'doc-3',
-        fullName: 'Др. Каримов Фарход Саидович',
-        specialty: 'Главный врач, нарколог-психотерапевт',
-        experienceYears: 18,
-        photo: 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&w=600&q=80'
-      },
-      {
-        id: 'doc-4',
-        fullName: 'Др. Назарова Зарина Баходировна',
-        specialty: 'Клинический психолог, КПТ-терапевт',
-        experienceYears: 12,
+        fullName: 'Др. Шарипова Нигина Акрамовна',
+        specialty: 'Клинический психолог, психотерапевт',
+        experienceYears: 15,
         photo: 'https://images.unsplash.com/photo-1594824813589-b0c4424613bb?auto=format&fit=crop&w=600&q=80'
       }
     ],
     services: [
       {
-        id: 's3',
-        title: 'Интенсивный стационарный курс (28 дней)',
-        description: 'Био-психо-социальная реабилитация в комфортабельной палате с питанием.',
-        price: 2400,
+        id: 's1',
+        title: 'Детоксикация и купирование абстиненции (7 дней)',
+        description: 'Медикаментозное очищение организма, суточный мониторинг, палата наблюдения.',
+        price: 420,
+        durationDays: 7
+      },
+      {
+        id: 's2',
+        title: 'Курс психосоциальной реабилитации (28 дней)',
+        description: 'Био-психо-социальная программа, групповая и личная психотерапия.',
+        price: 1450,
         durationDays: 28
+      }
+    ]
+  },
+  {
+    id: 'dushanbe-shifo-ibnsino',
+    name: 'Международная многопрофильная клиника "Шифо" (Клиника Ибн Сино)',
+    description: 'Ведущий современный частный медицинский центр Таджикистана европейского уровня. Специализируется на экспертной МРТ/КТ диагностике, кардиологии, неврологии, хирургии и реабилитации после сложных операций.',
+    address: 'ул. Ф. Ниязи, 34',
+    city: 'Душанбе',
+    country: 'Таджикистан',
+    lat: 38.5714,
+    lng: 68.7845,
+    rating: 4.90,
+    reviewCount: 295,
+    badge: 'Популярное',
+    tags: ['Реабилитация после операций', 'Кардиология', 'Неврология', 'Диагностика'],
+    images: [
+      'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1586773860418-d37222d8fce3?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&w=1000&q=80'
+    ],
+    category: 'Больница',
+    phone: '+992 44 600 4444',
+    email: 'info@ibnsino.tj',
+    website: 'https://ibnsina.tj',
+    minPrice: 350,
+    doctors: [
+      {
+        id: 'doc-3',
+        fullName: 'Проф. д-р Ходжаев Сухроб Давлатович',
+        specialty: 'Ведущий кардиолог-реабилитолог',
+        experienceYears: 26,
+        photo: 'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&w=600&q=80'
+      },
+      {
+        id: 'doc-4',
+        fullName: 'Др. Самадова Гулчехра Анваровна',
+        specialty: 'Врач-невролог, функциональный диагност',
+        experienceYears: 18,
+        photo: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=600&q=80'
+      }
+    ],
+    services: [
+      {
+        id: 's3',
+        title: 'Кардиологический и диагностический Check-up (3 дня)',
+        description: 'МРТ, УЗИ экспертного класса, ЭКГ с нагрузкой, лабораторный профиль.',
+        price: 350,
+        durationDays: 3
       },
       {
         id: 's4',
-        title: 'Программа детоксикации и стабилизации (7 дней)',
-        description: 'Медикаментозное очищение организма, купирование абстиненции.',
-        price: 950,
-        durationDays: 7
+        title: 'Комплексный курс реабилитации после операций (14 дней)',
+        description: 'Аппаратная физиотерапия, индивидуальная реабилитация, стационар.',
+        price: 890,
+        durationDays: 14
       }
     ]
   },
