@@ -28,9 +28,10 @@
   background: #ffffff !important;
 }
 
-/* OpenStreetMap Dark Mode filter - no API key needed */
+/* Keep map tiles in natural, vibrant full-color */
+.leaflet-tile-pane,
 .dark .leaflet-tile-pane {
-  filter: brightness(0.6) invert(1) contrast(3) hue-rotate(200deg) saturate(0.3);
+  filter: none !important;
 }
 
 .dark .leaflet-popup-content-wrapper {

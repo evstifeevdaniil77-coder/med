@@ -36,7 +36,8 @@
   background: #0f172a !important;
 }
 
-/* OpenStreetMap Dark Mode filter - no external API key needed */
+/* Keep map tiles in natural, vibrant full-color (Satellite and OSM) */
+.leaflet-tile-pane,
 .dark .leaflet-tile-pane {
-  filter: brightness(0.6) invert(1) contrast(3) hue-rotate(200deg) saturate(0.3);
+  filter: none !important;
 }
